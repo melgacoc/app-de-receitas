@@ -13,7 +13,7 @@ function Header({ title, profile, search }) {
           data-testid="profile-top-btn"
           src={ profileIcon }
           alt="Profile Icon"
-          href="/profile"
+          link="/profile"
         />}
         { search === 'true' && <img
           data-testid="search-top-btn"
