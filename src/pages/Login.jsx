@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 function Login({ history }) {
@@ -6,6 +6,15 @@ function Login({ history }) {
     loginemail: '',
     password: '',
   });
+  const [disabled, setDisabled] = useState(true);
+  const MIN_CHARACTERS = 6;
+
+  useEffect(() => {
+    const { loginemail, password } = profile;
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(loginemail);
+    const passIsValid = password.length > MIN_CHARACTERS;
+    setDisabled(!(emailRegex && passIsValid));
+  }, [profile]);
 
   const handleChange = ({ target }) => {
     setProfile((prevProfile) => ({
@@ -14,22 +23,16 @@ function Login({ history }) {
     }));
   };
 
-  const isValidForm = () => {
-    const { loginemail, password } = profile;
-    const MIN_CHARACTERS = 6;
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(loginemail);
-    const passIsValid = password.length > MIN_CHARACTERS;
-    return !(emailRegex && passIsValid);
-  };
-
   const onLogin = () => {
-    const { loginemail } = profile;
-    const email = {
-      loginemail,
+    const { loginemail: email } = profile;
+    const storeEmail = {
+      email,
     };
-    localStorage.setItem('user', email);
+
+    localStorage.setItem('user', JSON.stringify(storeEmail));
     localStorage.setItem('mealsToken', 1);
     localStorage.setItem('drinksToken', 1);
+
     history.push('/meals');
   };
 
@@ -55,7 +58,7 @@ function Login({ history }) {
         <button
           type="submit"
           data-testid="login-submit-btn"
-          disabled={ isValidForm() }
+          disabled={ disabled }
         >
           Enter
         </button>
