@@ -1,4 +1,4 @@
-export default async function fetchApiFilter(ingredient, name, firstLetter) {
+export default async function fetchApiMealsFilter(ingredient, name, firstLetter) {
   if (!name && !firstLetter) {
     const request = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
     const response = await request.json();

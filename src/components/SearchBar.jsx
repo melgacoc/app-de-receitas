@@ -1,18 +1,33 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../styles/searchBar.css';
-import fetchApiFilter from '../helpers/FetchMealsAPI';
+import fetchApiMealsFilter from '../helpers/FetchMealsAPI';
+import fetchApiDrinksFilter from '../helpers/FetchDrinksAPI';
 
 function SearchBar() {
   const [inputText, setInputText] = useState('');
   const [radioValue, setRadioValue] = useState('');
 
+  const { pathname } = useLocation();
+
   const handleFetchApi = () => {
-    if (radioValue === 'ingredient') {
-      return fetchApiFilter(inputText, null, null);
-    } if (radioValue === 'name') {
-      return fetchApiFilter(null, inputText, null);
-    } if (radioValue === 'first-letter') {
-      return fetchApiFilter(null, null, inputText);
+    if (pathname === '/meals') {
+      if (radioValue === 'ingredient') {
+        return fetchApiMealsFilter(inputText, null, null);
+      } if (radioValue === 'name') {
+        return fetchApiMealsFilter(null, inputText, null);
+      } if (radioValue === 'first-letter') {
+        return fetchApiMealsFilter(null, null, inputText);
+      }
+    }
+    if (pathname === '/drinks') {
+      if (radioValue === 'ingredient') {
+        return fetchApiDrinksFilter(inputText, null, null);
+      } if (radioValue === 'name') {
+        return fetchApiDrinksFilter(null, inputText, null);
+      } if (radioValue === 'first-letter') {
+        return fetchApiDrinksFilter(null, null, inputText);
+      }
     }
   };
 
