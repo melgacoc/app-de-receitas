@@ -1,0 +1,14 @@
+.search-bar {
+  border: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  height: 25vh;
+  justify-content: center;
+  text-align: center;
+}
+
+.search-bar-radios {
+  display: flex;
+  justify-content: center;
+}
