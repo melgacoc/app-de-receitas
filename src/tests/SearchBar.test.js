@@ -9,6 +9,7 @@ const PAGE_TITLE_TESTID = 'page-title';
 const SEARCH_INPUT_TESTID = 'search-input';
 const HEADER_BUTTON_TESTID = 'search-top-btn';
 const SEARCHBAR_BUTTON_TESTID = 'exec-search-btn';
+const RADIO_FIRSTLETTER_TESTID = 'first-letter-search-radio';
 
 describe('Testes da página de Login', () => {
   beforeEach(() => {
@@ -99,7 +100,7 @@ describe('Testes da página de Login', () => {
     userEvent.click(searchHeaderButton);
 
     const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-    const radioFirstLetter = screen.getByTestId('first-letter-search-radio');
+    const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
     const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
 
     userEvent.type(searchInput, 'a');
@@ -153,10 +154,46 @@ describe('Testes da página de Login', () => {
     userEvent.click(searchHeaderButton);
 
     const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-    const radioFirstLetter = screen.getByTestId('first-letter-search-radio');
+    const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
     const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
 
     userEvent.type(searchInput, 'a');
+    userEvent.click(radioFirstLetter);
+    userEvent.click(searchButton);
+
+    expect(searchButton).toBeInTheDocument();
+    expect(global.fetch).toHaveBeenCalled();
+  });
+
+  test('Se ao digitar mais de uma letra no input em meals, clicar no radio firstletter e clicar em Search faz uma requisição', async () => {
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+
+    const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
+    userEvent.click(searchHeaderButton);
+
+    const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
+    const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
+    const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
+
+    userEvent.type(searchInput, 'aa');
+    userEvent.click(radioFirstLetter);
+    userEvent.click(searchButton);
+
+    expect(searchButton).toBeInTheDocument();
+    expect(global.fetch).toHaveBeenCalled();
+  });
+
+  test('Se ao digitar mais de uma letra no input em drinks, clicar no radio firstletter e clicar em Search faz uma requisição', async () => {
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
+
+    const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
+    userEvent.click(searchHeaderButton);
+
+    const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
+    const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
+    const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
+
+    userEvent.type(searchInput, 'aa');
     userEvent.click(radioFirstLetter);
     userEvent.click(searchButton);
 

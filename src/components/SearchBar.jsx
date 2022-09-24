@@ -19,8 +19,7 @@ function SearchBar() {
       } if (radioValue === 'first-letter') {
         return fetchApiMealsFilter(null, null, inputText);
       }
-    }
-    if (pathname === '/drinks') {
+    } else if (pathname === '/drinks') {
       if (radioValue === 'ingredient') {
         return fetchApiDrinksFilter(inputText, null, null);
       } if (radioValue === 'name') {
