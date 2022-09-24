@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import '../styles/header.css';
+import { changeSearchBarStatus } from '../redux/actions';
 
 function Header({ title, profile, search }) {
   const history = useHistory();
-  const [isEnabled, setIsEnabled] = useState(false);
+  const searchBarStatus = useSelector(({ reducer }) => reducer.isSearchBarEnabled);
+  const dispatch = useDispatch();
   return (
     <header>
       <h1 data-testid="page-title">{title}</h1>
-      <div>
+      <div className="header-buttons">
         <button type="button" onClick={ () => history.push('./profile') }>
           { profile === 'true' && <img
             data-testid="profile-top-btn"
@@ -19,18 +22,16 @@ function Header({ title, profile, search }) {
             alt="Profile Icon"
           />}
         </button>
-        <button type="button" onClick={ () => setIsEnabled(!isEnabled) }>
+        <button
+          type="button"
+          onClick={ () => dispatch(changeSearchBarStatus(!searchBarStatus)) }
+        >
           { search === 'true' && <img
             data-testid="search-top-btn"
             src={ searchIcon }
             alt="Profile Icon"
           />}
         </button>
-        { isEnabled && <input
-          data-testid="search-input"
-          type="text"
-          placeholder="Search"
-        />}
       </div>
     </header>
   );

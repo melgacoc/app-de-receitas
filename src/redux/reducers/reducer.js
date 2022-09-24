@@ -1,13 +1,15 @@
+import { SEARCHBAR_STATUS } from '../actions';
+
 const INITIAL_STATE = {
-  name: '',
+  isSearchBarEnabled: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'REDUCER': return {
-    ...state,
-  };
-  default: return state;
+  case SEARCHBAR_STATUS:
+    return { ...state, isSearchBarEnabled: action.status };
+  default:
+    return state;
   }
 };
 
