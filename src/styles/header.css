@@ -15,12 +15,12 @@ header img {
 
 header button {
   background: none;
-	border: none;
-	color: inherit;
-	cursor: pointer;
-	font: inherit;
-	outline: inherit;
-	padding: 0;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  outline: inherit;
+  padding: 0;
 }
 
 input {
