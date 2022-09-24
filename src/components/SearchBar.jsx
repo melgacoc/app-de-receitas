@@ -3,6 +3,7 @@ import React from 'react';
 function SearchBar() {
   return (
     <div>
+      <input type="text" name="" id="" data-testid="search-input" />
       <input type="radio" name="" id="" data-testid="ingredient-search-radio" />
       <input type="radio" name="" id="" data-testid="name-search-radio" />
       <input type="radio" name="" id="" data-testid="first-letter-search-radio" />

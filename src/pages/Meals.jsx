@@ -5,9 +5,8 @@ import Header from '../components/Header';
 function Meals() {
   return (
     <div>
-      <span>Meals</span>
-      <SearchBar />
       <Header title="Meals" profile="true" search="true" />
+      <SearchBar />
     </div>
   );
 }

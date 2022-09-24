@@ -53,7 +53,7 @@ function Login({ history }) {
           data-testid="password-input"
           value={ profile.password }
           onChange={ handleChange }
-          placeholder="E-mail"
+          placeholder="Password"
         />
         <button
           type="submit"
