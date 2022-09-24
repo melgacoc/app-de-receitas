@@ -26,12 +26,12 @@ function Header({ title, profile, search }) {
             alt="Profile Icon"
           />}
         </button>
+        { isEnabled && <input
+          data-testid="search-input"
+          type="text"
+          placeholder="Search"
+        />}
       </div>
-      { isEnabled && <input
-        data-testid="search-input"
-        type="text"
-        placeholder="Search"
-      />}
     </header>
   );
 }
