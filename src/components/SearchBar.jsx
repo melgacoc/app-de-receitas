@@ -1,31 +1,33 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import '../styles/searchBar.css';
-import fetchApiMealsFilter from '../helpers/FetchMealsAPI';
-import fetchApiDrinksFilter from '../helpers/FetchDrinksAPI';
+import fetchApiMealsFilter from '../helpers/FetchSearchBarMeals';
+import fetchApiDrinksFilter from '../helpers/FetchSearchBarDrinks';
 
 function SearchBar() {
   const [inputText, setInputText] = useState('');
   const [radioValue, setRadioValue] = useState('');
-
+  const history = useHistory();
   const { pathname } = useLocation();
 
-  const handleFetchApi = () => {
-    if (pathname === '/meals') {
-      if (radioValue === 'ingredient') {
-        return fetchApiMealsFilter(inputText, null, null);
-      } if (radioValue === 'name') {
-        return fetchApiMealsFilter(null, inputText, null);
-      } if (radioValue === 'first-letter') {
-        return fetchApiMealsFilter(null, null, inputText);
+  const handleFetchApi = async () => {
+    const fetchApi = async () => {
+      if (pathname === '/meals') {
+        const resultMealsApi = await fetchApiMealsFilter({ [radioValue]: inputText });
+        return resultMealsApi;
       }
-    } else if (pathname === '/drinks') {
-      if (radioValue === 'ingredient') {
-        return fetchApiDrinksFilter(inputText, null, null);
-      } if (radioValue === 'name') {
-        return fetchApiDrinksFilter(null, inputText, null);
-      } if (radioValue === 'first-letter') {
-        return fetchApiDrinksFilter(null, null, inputText);
+      const resultDrinksApi = await fetchApiDrinksFilter({ [radioValue]: inputText });
+      return resultDrinksApi;
+    };
+    const result = await fetchApi();
+    const typeOfPathname = pathname.slice(1);
+    console.log(typeOfPathname);
+    if (result[typeOfPathname]) {
+      const mealsOrDrinks = result[typeOfPathname];
+      if (mealsOrDrinks.length === 1) {
+        history.push(`${pathname}/${(typeOfPathname === 'meals')
+          ? mealsOrDrinks[0].idMeal
+          : mealsOrDrinks[0].idDrink}`);
       }
     }
   };
@@ -68,7 +70,7 @@ function SearchBar() {
             name="radio-filter"
             data-testid="first-letter-search-radio"
             onClick={ ({ target }) => setRadioValue(target.value) }
-            value="first-letter"
+            value="firstLetter"
           />
         </div>
       </div>
