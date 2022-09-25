@@ -11,7 +11,7 @@ const HEADER_BUTTON_TESTID = 'search-top-btn';
 const SEARCHBAR_BUTTON_TESTID = 'exec-search-btn';
 const RADIO_FIRSTLETTER_TESTID = 'first-letter-search-radio';
 
-describe('Testes da página de Login', () => {
+describe('Testes do componente SearchBar', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({

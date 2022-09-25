@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './Recipes.css';
+import '../styles/Recipes.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchCategories, fetchRecipes } from '../redux/actions';
@@ -29,7 +29,7 @@ function Recipes({ type, recipes, fetchingRec, fetchingCat, categories }) {
         ))}
       {type === 'meals'
         && recipes
-          .filter((rec, index) => (
+          .filter((_, index) => (
             index <= MAX_NUMBER_RECIPES
           ))
           .map((rec, index) => (
@@ -80,8 +80,8 @@ function Recipes({ type, recipes, fetchingRec, fetchingCat, categories }) {
 Recipes.propTypes = {
   fetchingRec: PropTypes.func.isRequired,
   fetchingCat: PropTypes.func.isRequired,
-  recipes: PropTypes.shape().isRequired,
-  categories: PropTypes.shape().isRequired,
+  recipes: PropTypes.instanceOf(Object).isRequired,
+  categories: PropTypes.instanceOf(Object).isRequired,
   type: PropTypes.string.isRequired,
 };
 

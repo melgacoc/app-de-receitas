@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import '../styles/searchBar.css';
+import { connect, useDispatch } from 'react-redux';
 import fetchApiMealsFilter from '../helpers/FetchSearchBarMeals';
 import fetchApiDrinksFilter from '../helpers/FetchSearchBarDrinks';
+import { addRecipes } from '../redux/actions';
 
 function SearchBar() {
   const [inputText, setInputText] = useState('');
   const [radioValue, setRadioValue] = useState('');
   const history = useHistory();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   const handleFetchApi = async () => {
     const fetchApi = async () => {
@@ -29,6 +32,8 @@ function SearchBar() {
           ? mealsOrDrinks[0].idMeal
           : mealsOrDrinks[0].idDrink}`);
       }
+      console.log(mealsOrDrinks);
+      dispatch(addRecipes(mealsOrDrinks));
     }
   };
 
@@ -87,4 +92,12 @@ function SearchBar() {
   );
 }
 
-export default SearchBar;
+const mapStateToProps = (state) => ({
+  recipes: state.reducer.recipes,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchingRec: (state) => dispatch(fetchRecipes(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
