@@ -1,26 +1,3 @@
-#recipes {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 500px;
-}
-
-#recipe-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  padding-top: 15px;
-  width: 500px;
-  gap: 10px;
-}
-
-.recipeButton{
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 200px;
-}
-
 .thumbnail {
   width: 100px;
 }
