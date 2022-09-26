@@ -24,11 +24,11 @@ export function getCategories(payload) {
 export const fetchRecipes = (type) => async (dispatch) => {
   if (type === 'meals') {
     const meals = await getMeals();
-    await dispatch(addRecipes(meals.meals));
+    dispatch(addRecipes(meals.meals));
   }
   if (type === 'drinks') {
     const drinks = await getDrinks();
-    await dispatch(addRecipes(drinks.drinks));
+    dispatch(addRecipes(drinks.drinks));
   }
 };
 

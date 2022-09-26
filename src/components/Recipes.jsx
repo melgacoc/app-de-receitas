@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../styles/Recipes.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,11 +7,8 @@ import { fetchCategories, fetchRecipes } from '../redux/actions';
 const MAX_NUMBER_RECIPES = 11;
 const MAX_NUMBER_CATEGORIES = 4;
 
-function Recipes({ type, recipes, fetchingRec, fetchingCat, categories }) {
-  useEffect(() => {
-    fetchingRec(type);
-    fetchingCat(type);
-  }, [fetchingRec, fetchingCat, type]);
+function Recipes({ type, recipes, categories }) {
+  console.log(recipes);
   return (
     <div>
       {categories
@@ -78,8 +75,6 @@ function Recipes({ type, recipes, fetchingRec, fetchingCat, categories }) {
 }
 
 Recipes.propTypes = {
-  fetchingRec: PropTypes.func.isRequired,
-  fetchingCat: PropTypes.func.isRequired,
   recipes: PropTypes.instanceOf(Object).isRequired,
   categories: PropTypes.instanceOf(Object).isRequired,
   type: PropTypes.string.isRequired,
