@@ -1,7 +1,15 @@
-import { SEARCHBAR_STATUS, ADD_RECIPES, GET_CATEGORIES } from '../actions';
+import {
+  SEARCHBAR_STATUS,
+  ADD_RECIPES,
+  GET_CATEGORIES,
+  GET_FILTER,
+  SET_ID,
+} from '../actions';
 
 const INITIAL_STATE = {
   isSearchBarEnabled: false,
+  detailId: '',
+  categorieFilter: '',
   recipes: [],
   categories: [],
 };
@@ -17,6 +25,14 @@ const reducer = (state = INITIAL_STATE, action) => {
   case GET_CATEGORIES: return {
     ...state,
     categories: action.payload,
+  };
+  case GET_FILTER: return {
+    ...state,
+    categorieFilter: action.payload,
+  };
+  case SET_ID: return {
+    ...state,
+    detailId: action.payload,
   };
   default: return state;
   }
