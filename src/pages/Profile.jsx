@@ -6,7 +6,7 @@ import Header from '../components/Header';
 function Profile() {
   const [emailStoraged, setEmailStoraged] = useState('');
   useEffect(() => {
-    const email = JSON.parse(localStorage.getItem('user'));
+    const email = JSON.parse(localStorage.getItem('user')) || { email: 'Didnt signup' };
     setEmailStoraged(email.email);
   }, []);
   const history = useHistory();
@@ -19,7 +19,11 @@ function Profile() {
   return (
     <div>
       <Header title="Profile" profile="true" search="false" />
-      <h4 data-testid="profile-email">{ `Your email: ${emailStoraged}` }</h4>
+      <h4
+        data-testid="profile-email"
+      >
+        { `Your email: ${emailStoraged}` }
+      </h4>
       <button
         type="button"
         data-testid="profile-done-btn"
