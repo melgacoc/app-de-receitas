@@ -1,209 +1,114 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterAndRedux from './helpers/renderWith';
-import mockData from './helpers/mockData';
-// import SearchBar from '../components/SearchBar';
-
-// // const PAGE_TITLE_TESTID = 'page-title';
-// // const SEARCH_INPUT_TESTID = 'search-input';
-// // const HEADER_BUTTON_TESTID = 'search-top-btn';
-// // const SEARCHBAR_BUTTON_TESTID = 'exec-search-btn';
-// // const RADIO_FIRSTLETTER_TESTID = 'first-letter-search-radio';
+import mockVodka from './helpers/mockChicken';
+import drinkCategories from './helpers/mockDrinkCategories';
+import ordinaryDrinks from './helpers/mockOrdinaryDrinks';
 
 describe('Testes do componente Drinks', () => {
   beforeEach(() => {
-    jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockReturnValue(mockData),
-    });
+    jest.restoreAllMocks();
   });
-
-  // test('Se a searchBar não está visível ao entrar na rota meals', () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
-
-  //   const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
-  //   const searchInput = screen.queryByTestId(SEARCH_INPUT_TESTID);
-
-  //   expect(pageTitle).toBeInTheDocument();
-  //   expect(pageTitle).toHaveTextContent(/meals/i);
-  //   expect(searchInput).not.toBeInTheDocument();
-  // });
 
   test('Se os cards são renderizados', async () => {
-    renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
+    const { container } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-    await waitFor(() => expect(global.fetch).toBeCalled());
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockVodka),
+    });
 
-    const card = screen.getByTestId('0-recipe-card');
-    expect(card).toBeInTheDocument();
+    const firstVodka = await screen.findByTestId('0-recipe-card');
+    await waitFor(() => expect(firstVodka).toBeInTheDocument());
 
-    // const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
-    // const searchInput = screen.queryByTestId(SEARCH_INPUT_TESTID);
-
-    // expect(pageTitle).toBeInTheDocument();
-    // expect(pageTitle).toHaveTextContent(/drinks/i);
-    // expect(searchInput).not.toBeInTheDocument();
+    const pics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(pics.length).toBe(12));
   });
 
-  // test('Se ao clicar no botão de pesquisa no Header, o searchBar aparece', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+  test('Se os filtros de categoria funcionam', async () => {
+    const { container } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-  //   const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(drinkCategories),
+    });
 
-  //   expect(pageTitle).toBeInTheDocument();
-  //   expect(pageTitle).toHaveTextContent(/meals/i);
-  //   expect(searchHeaderButton).toBeInTheDocument();
+    const ordinaryBtn = await screen.findByTestId('Ordinary Drink-category-filter');
+    await waitFor(() => expect(ordinaryBtn).toBeInTheDocument());
 
-  //   userEvent.click(searchHeaderButton);
+    const catBtn = container.getElementsByClassName('categoryButton');
+    await waitFor(() => expect(catBtn.length).toBe(6));
 
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   expect(searchInput).toBeInTheDocument();
-  // });
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(ordinaryDrinks),
+    });
 
-  // test('Se ao digitar no input em meals, clicar no radio ingredient e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+    userEvent.click(catBtn[0]);
 
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
+    const drinksPic = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(drinksPic.length).toBe(2));
 
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioIngredient = screen.getByTestId('ingredient-search-radio');
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockVodka),
+    });
 
-  //   userEvent.type(searchInput, 'chicken');
-  //   userEvent.click(radioIngredient);
-  //   userEvent.click(searchButton);
+    userEvent.click(catBtn[0]);
 
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
+    const chickenPics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(chickenPics.length).toBe(2));
+  });
 
-  // test('Se ao digitar no input em meals, clicar no radio name e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+  test('Se o botão de All do filtro funciona', async () => {
+    const { container } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(drinkCategories),
+    });
 
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioName = screen.getByTestId('name-search-radio');
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
+    // const ordinaryBtn = await screen.findByTestId('Ordinary Drink-category-filter');
+    // await waitFor(() => expect(ordinaryBtn).toBeInTheDocument());
 
-  //   userEvent.type(searchInput, 'soup');
-  //   userEvent.click(radioName);
-  //   userEvent.click(searchButton);
+    const catBtn = container.getElementsByClassName('categoryButton');
+    await waitFor(() => expect(catBtn.length).toBe(6));
 
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(ordinaryDrinks),
+    });
 
-  // test('Se ao digitar no input em meals, clicar no radio firstletter e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+    userEvent.click(catBtn[0]);
 
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
+    const drinksPic = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(drinksPic.length).toBe(2));
 
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockVodka),
+    });
 
-  //   userEvent.type(searchInput, 'a');
-  //   userEvent.click(radioFirstLetter);
-  //   userEvent.click(searchButton);
+    userEvent.click(catBtn[5]);
 
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
+    const drinkPics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(drinkPics.length).toBe(2));
+  });
 
-  // test('Se ao digitar no input em drinks, clicar no radio ingredient e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
+  test('Se ao clicar no card ocorre o redirecionamento', async () => {
+    const { history } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockVodka),
+    });
 
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioIngredient = screen.getByTestId('ingredient-search-radio');
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
+    const firstVodka = await screen.findByTestId('0-recipe-card');
+    await waitFor(() => expect(firstVodka).toBeInTheDocument());
 
-  //   userEvent.type(searchInput, 'chicken');
-  //   userEvent.click(radioIngredient);
-  //   userEvent.click(searchButton);
-
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
-
-  // test('Se ao digitar no input em drinks, clicar no radio name e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
-
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
-
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioName = screen.getByTestId('name-search-radio');
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
-
-  //   userEvent.type(searchInput, 'soup');
-  //   userEvent.click(radioName);
-  //   userEvent.click(searchButton);
-
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
-
-  // test('Se ao digitar no input em drinks, clicar no radio firstletter e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
-
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
-
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
-
-  //   userEvent.type(searchInput, 'a');
-  //   userEvent.click(radioFirstLetter);
-  //   userEvent.click(searchButton);
-
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
-
-  // test('Se ao digitar mais de uma letra no input em meals, clicar no radio firstletter e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
-
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
-
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
-
-  //   userEvent.type(searchInput, 'aa');
-  //   userEvent.click(radioFirstLetter);
-  //   userEvent.click(searchButton);
-
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
-
-  // test('Se ao digitar mais de uma letra no input em drinks, clicar no radio firstletter e clicar em Search faz uma requisição', async () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
-
-  //   const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
-  //   userEvent.click(searchHeaderButton);
-
-  //   const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
-  //   const radioFirstLetter = screen.getByTestId(RADIO_FIRSTLETTER_TESTID);
-  //   const searchButton = screen.getByTestId(SEARCHBAR_BUTTON_TESTID);
-
-  //   userEvent.type(searchInput, 'aa');
-  //   userEvent.click(radioFirstLetter);
-  //   userEvent.click(searchButton);
-
-  //   expect(searchButton).toBeInTheDocument();
-  //   expect(global.fetch).toHaveBeenCalled();
-  // });
+    userEvent.click(firstVodka);
+    expect(history.location.pathname).toBe('/drinks/15997');
+  });
 });

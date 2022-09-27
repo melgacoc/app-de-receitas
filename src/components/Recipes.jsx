@@ -3,7 +3,7 @@ import '../styles/Recipes.css';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { fetchRecipes, fetchByCategories, getFilter, setId } from '../redux/actions';
+import { fetchRecipes, getFilter, fetchByCategories, setId } from '../redux/actions';
 
 const MAX_NUMBER_RECIPES = 11;
 const MAX_NUMBER_CATEGORIES = 4;
@@ -27,17 +27,18 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
   };
   const handleRecipeDetails = (event) => {
     dispatch(setId(event.target.name));
-    history.push(`${pathname}${event.target.name}`);
+    history.push(`${pathname}/${event.target.name}`);
   };
   return (
-    <div id="recipes">
-      <div id="categories">
+    <div>
+      <div id="categories" key="categories">
         {categories
           .filter((cat, index) => (
             index <= MAX_NUMBER_CATEGORIES
           ))
           .map((cat, index) => (
             <button
+              className="categoryButton"
               data-testid={ `${cat.strCategory}-category-filter` }
               onClick={ handleCatFilter }
               key={ index }
@@ -48,6 +49,7 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
             </button>
           ))}
         <button
+          className="categoryButton"
           data-testid="All-category-filter"
           onClick={ handleAllFilter }
           type="button"
@@ -55,7 +57,7 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
           All
         </button>
       </div>
-      <div id="recipe-cards">
+      <div id="meal-recipes" key="meal-recipes">
         {type === 'meals'
           && recipes
             .filter((_, index) => (
@@ -83,6 +85,8 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
                 </span>
               </button>
             ))}
+      </div>
+      <div id="drinks-recipes" key="drinks-recipes">
         {type === 'drinks'
           && recipes
             .filter((rec, index) => (

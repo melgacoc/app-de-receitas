@@ -19,7 +19,7 @@ function Drinks() {
   const categories = useSelector(({ reducer }) => reducer.categories);
   return (
     <div>
-      <Header title="Meals" profile="true" search="true" />
+      <Header title="Drinks" profile="true" search="true" />
       { searchBarStatus && <SearchBar /> }
       {(recipes && categories && !load) && <Recipes type="drinks" />}
       <Footer />

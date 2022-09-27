@@ -1,50 +1,114 @@
 import React from 'react';
-import { waitFor } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouterAndRedux from './helpers/renderWith';
-import mockData from './helpers/mockData';
-// import SearchBar from '../components/SearchBar';
-
-// // const PAGE_TITLE_TESTID = 'page-title';
-// // const SEARCH_INPUT_TESTID = 'search-input';
-// // const HEADER_BUTTON_TESTID = 'search-top-btn';
-// // const SEARCHBAR_BUTTON_TESTID = 'exec-search-btn';
-// // const RADIO_FIRSTLETTER_TESTID = 'first-letter-search-radio';
+import mockChiken from './helpers/mockChicken';
+import mockMealCategories from './helpers/mockMealCategories';
+import mockBeef from './helpers/mockBeef';
 
 describe('Testes do componente Meals', () => {
   beforeEach(() => {
-    jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockReturnValue(mockData),
-    });
+    jest.restoreAllMocks();
   });
 
-  // test('Se a searchBar não está visível ao entrar na rota meals', () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
-
-  //   const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
-  //   const searchInput = screen.queryByTestId(SEARCH_INPUT_TESTID);
-
-  //   expect(pageTitle).toBeInTheDocument();
-  //   expect(pageTitle).toHaveTextContent(/meals/i);
-  //   expect(searchInput).not.toBeInTheDocument();
-  // });
-
   test('Se os cards são renderizados', async () => {
-    const { findByTestId } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+    const { container } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
-    await waitFor(() => expect(global.fetch).toBeCalled());
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockChiken),
+    });
 
-    const card = await findByTestId('0-recipe-card');
+    const brownChicken = await screen.findByTestId('0-recipe-card');
+    await waitFor(() => expect(brownChicken).toBeInTheDocument());
 
-    expect(card).toBeInTheDocument();
+    const pics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(pics.length).toBe(12));
+  });
 
-    // const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
-    // const searchInput = screen.queryByTestId(SEARCH_INPUT_TESTID);
+  test('Se os filtros de categoria funcionam', async () => {
+    const { container } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
-    // expect(pageTitle).toBeInTheDocument();
-    // expect(pageTitle).toHaveTextContent(/drinks/i);
-    // expect(searchInput).not.toBeInTheDocument();
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockMealCategories),
+    });
+
+    const beefBtn = await screen.findByTestId('Beef-category-filter');
+    await waitFor(() => expect(beefBtn).toBeInTheDocument());
+
+    const catBtn = container.getElementsByClassName('categoryButton');
+    await waitFor(() => expect(catBtn.length).toBe(6));
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockBeef),
+    });
+
+    userEvent.click(catBtn[0]);
+
+    const beefPics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(beefPics.length).toBe(2));
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockChiken),
+    });
+
+    userEvent.click(catBtn[0]);
+
+    const chickenPics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(chickenPics.length).toBe(2));
+  });
+
+  test('Se o botão de All do filtro funciona', async () => {
+    const { container } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockMealCategories),
+    });
+
+    const beefBtn = await screen.findByTestId('Beef-category-filter');
+    await waitFor(() => expect(beefBtn).toBeInTheDocument());
+
+    const catBtn = container.getElementsByClassName('categoryButton');
+    await waitFor(() => expect(catBtn.length).toBe(6));
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockBeef),
+    });
+
+    userEvent.click(catBtn[0]);
+
+    const beefPics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(beefPics.length).toBe(2));
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockChiken),
+    });
+
+    userEvent.click(catBtn[5]);
+
+    const chickenPics = container.getElementsByClassName('thumbnail');
+    await waitFor(() => expect(chickenPics.length).toBe(2));
+  });
+
+  test('Se ao clicar no card ocorre o redirecionamento', async () => {
+    const { history } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockReturnValue(mockChiken),
+    });
+
+    const brownChicken = await screen.findByTestId('0-recipe-card');
+    await waitFor(() => expect(brownChicken).toBeInTheDocument());
+
+    userEvent.click(brownChicken);
+    expect(history.location.pathname).toBe('/meals/52977');
   });
 });

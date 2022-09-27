@@ -17,7 +17,6 @@ function Meals() {
   }, [dispatch]);
   const recipes = useSelector(({ reducer }) => reducer.recipes);
   const categories = useSelector(({ reducer }) => reducer.categories);
-  console.log(recipes, categories);
   return (
     <div>
       <Header title="Meals" profile="true" search="true" />
