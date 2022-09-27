@@ -77,9 +77,11 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
                   className="thumbnail"
                   src={ rec.strMealThumb }
                   alt={ rec.strMeal }
+                  name={ rec.idMeal }
                 />
                 <span
                   data-testid={ `${index}-card-name` }
+                  name={ rec.idMeal }
                 >
                   { rec.strMeal }
                 </span>
@@ -89,7 +91,7 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
       <div id="drinks-recipes" key="drinks-recipes">
         {type === 'drinks'
           && recipes
-            .filter((rec, index) => (
+            .filter((_, index) => (
               index <= MAX_NUMBER_RECIPES
             ))
             .map((rec, index) => (
@@ -106,9 +108,11 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
                   className="thumbnail"
                   src={ rec.strDrinkThumb }
                   alt={ rec.strDrink }
+                  name={ rec.idDrink }
                 />
                 <span
                   data-testid={ `${index}-card-name` }
+                  name={ rec.idDrink }
                 >
                   { rec.strDrink }
                 </span>
