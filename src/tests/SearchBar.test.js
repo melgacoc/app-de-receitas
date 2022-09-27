@@ -11,8 +11,6 @@ import mockOnlyOneItemMeals from './helpers/mockOnlyOneItemMeals';
 import mockOnlyOneItemDrinks from './helpers/mockOnlyOneItemDrinks';
 import mockFirstLetterDrinks from './helpers/mockFirstLetterDrinks';
 import mockVodka from './helpers/mockVodka';
-// import mockData from './helpers/mockData';
-// import SearchBar from '../components/SearchBar';
 
 const PAGE_TITLE_TESTID = 'page-title';
 const SEARCH_INPUT_TESTID = 'search-input';
@@ -28,17 +26,6 @@ describe('Testes do componente SearchBar', () => {
   beforeEach(() => {
     jest.restoreAllMocks();
   });
-
-  // test('Se a searchBar não está visível ao entrar na rota meals', () => {
-  //   renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
-
-  //   const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
-  //   const searchInput = screen.queryByTestId(SEARCH_INPUT_TESTID);
-
-  //   expect(pageTitle).toBeInTheDocument();
-  //   expect(pageTitle).toHaveTextContent(/meals/i);
-  //   expect(searchInput).not.toBeInTheDocument();
-  // });
 
   test('Se a searchBar não está visível ao entrar na rota meals', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
