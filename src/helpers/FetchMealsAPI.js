@@ -11,3 +11,10 @@ export async function getMealsCategory() {
   const data = await response.json();
   return data;
 }
+
+export async function getMealsByCategory(cat) {
+  const URL = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+}
