@@ -8,7 +8,6 @@ const MAX_NUMBER_RECIPES = 11;
 const MAX_NUMBER_CATEGORIES = 4;
 
 function Recipes({ type, recipes, categories }) {
-  console.log(recipes);
   return (
     <div>
       {categories

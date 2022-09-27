@@ -29,9 +29,14 @@ const mapStateToProps = (state) => ({
   categories: state.reducer.categories,
 });
 
+Drinks.defaultProps = {
+  recipes: [],
+  categories: [],
+};
+
 Drinks.propTypes = {
-  recipes: PropTypes.instanceOf(Object).isRequired,
-  categories: PropTypes.instanceOf(Object).isRequired,
+  recipes: PropTypes.instanceOf(Object),
+  categories: PropTypes.instanceOf(Object),
 };
 
 export default connect(mapStateToProps, null)(Drinks);

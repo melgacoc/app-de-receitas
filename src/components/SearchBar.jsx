@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import '../styles/searchBar.css';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import fetchApiMealsFilter from '../helpers/FetchSearchBarMeals';
 import fetchApiDrinksFilter from '../helpers/FetchSearchBarDrinks';
 import { addRecipes } from '../redux/actions';
@@ -18,13 +18,13 @@ function SearchBar() {
       if (pathname === '/meals') {
         const resultMealsApi = await fetchApiMealsFilter({ [radioValue]: inputText });
         return resultMealsApi;
+      } if (pathname === '/drinks') {
+        const resultDrinksApi = await fetchApiDrinksFilter({ [radioValue]: inputText });
+        return resultDrinksApi;
       }
-      const resultDrinksApi = await fetchApiDrinksFilter({ [radioValue]: inputText });
-      return resultDrinksApi;
     };
     const result = await fetchApi();
     const typeOfPathname = pathname.slice(1);
-    console.log(typeOfPathname);
     if (result[typeOfPathname]) {
       const mealsOrDrinks = result[typeOfPathname];
       if (mealsOrDrinks.length === 1) {
@@ -32,7 +32,6 @@ function SearchBar() {
           ? mealsOrDrinks[0].idMeal
           : mealsOrDrinks[0].idDrink}`);
       }
-      console.log(mealsOrDrinks);
       dispatch(addRecipes(mealsOrDrinks));
     }
   };
@@ -92,12 +91,4 @@ function SearchBar() {
   );
 }
 
-const mapStateToProps = (state) => ({
-  recipes: state.reducer.recipes,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchingRec: (state) => dispatch(fetchRecipes(state)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+export default SearchBar;
