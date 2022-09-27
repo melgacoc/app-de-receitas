@@ -93,12 +93,13 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
               index <= MAX_NUMBER_RECIPES
             ))
             .map((rec, index) => (
-              <div
+              <button
                 type="button"
                 className="recipeButton"
                 data-testid={ `${index}-recipe-card` }
                 key={ rec.idDrink }
                 name={ rec.idDrink }
+                onClick={ handleRecipeDetails }
               >
                 <img
                   data-testid={ `${index}-card-img` }
@@ -111,7 +112,7 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
                 >
                   { rec.strDrink }
                 </span>
-              </div>
+              </button>
             ))}
       </div>
     </div>
