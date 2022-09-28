@@ -38,13 +38,6 @@ export function getFilter(payload) {
   };
 }
 
-export function setId(payload) {
-  return {
-    type: SET_ID,
-    payload,
-  };
-}
-
 export const fetchRecipes = (type) => async (dispatch) => {
   if (type === 'meals') {
     const meals = await getMeals();
