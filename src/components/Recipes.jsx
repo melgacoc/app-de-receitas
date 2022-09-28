@@ -3,7 +3,7 @@ import '../styles/Recipes.css';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { fetchRecipes, getFilter, fetchByCategories, setId } from '../redux/actions';
+import { fetchRecipes, getFilter, fetchByCategories } from '../redux/actions';
 
 const MAX_NUMBER_RECIPES = 11;
 const MAX_NUMBER_CATEGORIES = 4;
@@ -26,7 +26,6 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
     dispatch(fetchRecipes(type));
   };
   const handleRecipeDetails = (event) => {
-    dispatch(setId(event.target.name));
     history.push(`${pathname}/${event.target.name}`);
   };
   return (
