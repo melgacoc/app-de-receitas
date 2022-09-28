@@ -36,11 +36,9 @@ function DoneRecipes() {
   const filterRecipe = ({ target }) => {
     if (target.value === 'all') setfiltered(doneRecipes);
     if (target.value === 'drink') {
-      console.log('squi');
       setfiltered(doneRecipes.filter((recipe) => recipe.type === 'drink'));
     }
     if (target.value === 'meal') {
-      console.log('squifffffff');
       setfiltered(doneRecipes.filter((recipe) => recipe.type === 'meal'));
     }
   };
@@ -77,7 +75,7 @@ function DoneRecipes() {
           onClick={ filterRecipe }
           type="button"
         >
-          Driks
+          Drinks
         </button>
         { link && <span>Link copied!</span>}
       </div>
