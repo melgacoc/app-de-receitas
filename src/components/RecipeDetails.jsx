@@ -1,26 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import FetchDrinkDetail from '../helpers/FetchDrinkDetailAPI';
 import FetchMealDetail from '../helpers/FetchMealDetailAPI';
+import CardDrinkDetails from './CardDrinkDetails';
+import CardMealDetails from './CardMealDetails';
 
 function RecipeDetails() {
+  const [recipe, setRecipe] = useState([]);
   const location = useLocation();
   const pathName = location.pathname.split('/');
-  console.log(pathName);
   const mealOrDrink = pathName[1];
   const recipeId = pathName[2];
 
   useEffect(() => {
     if (mealOrDrink === 'meals') {
-      FetchMealDetail(recipeId);
+      FetchMealDetail(recipeId, setRecipe);
     } if (mealOrDrink === 'drinks') {
-      FetchDrinkDetail(recipeId);
+      FetchDrinkDetail(recipeId, setRecipe);
     }
   }, [mealOrDrink, recipeId]);
 
   return (
     <div>
-      <h1>Recipe Details</h1>
+      { mealOrDrink === 'meals'
+        ? CardMealDetails(recipe)
+        : CardDrinkDetails(recipe) }
     </div>
   );
 }
