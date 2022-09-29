@@ -19,7 +19,7 @@ function RecipeInProgress() {
   const [finished, setFinished] = useState([true]);
   const [allIng, setAllIng] = useState([]);
   const checkIfFinished = (getObject) => {
-    if (allIng.every((ing) => getObject.includes(ing))) { setFinished(false); }
+    if (allIng.some((ing) => getObject.includes(ing))) { setFinished(false); }
   };
   const [ingredients, setIngredients] = useState(() => {
     if (localStorage.getItem('inProgressRecipes')
@@ -99,22 +99,22 @@ function RecipeInProgress() {
     if (mealOrDrink === 'meals') {
       const newFav = {
         id: details.idMeal,
-        type: mealOrDrink,
+        type: 'meal',
         nationality: details.strArea,
         category: details.strCategory,
-        name: details.strMeal,
         alcoholicOrNot: '',
+        name: details.strMeal,
         image: details.strMealThumb };
       setLocalStorage(newFav);
     }
     if (mealOrDrink === 'drinks') {
       const newFav = {
         id: details.idDrink,
-        type: mealOrDrink,
+        type: 'drink',
         nationality: '',
         category: details.strCategory,
-        name: details.strDrink,
         alcoholicOrNot: details.strAlcoholic,
+        name: details.strDrink,
         image: details.strDrinkThumb };
       setLocalStorage(newFav);
     }
