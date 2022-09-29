@@ -245,7 +245,9 @@ describe('Testes do componente SearchBar', () => {
     userEvent.click(radioName);
     userEvent.click(searchButton);
 
-    const recipeDetails = await screen.findByText('RecipeDetails');
+    jest.restoreAllMocks();
+
+    const recipeDetails = await screen.findByTestId('recipe-title');
     expect(recipeDetails).toBeInTheDocument();
 
     console.log(history.location.pathname);
@@ -271,8 +273,12 @@ describe('Testes do componente SearchBar', () => {
     userEvent.click(radioName);
     userEvent.click(searchButton);
 
-    const recipeDetails = await screen.findByText('RecipeDetails');
-    expect(recipeDetails).toBeInTheDocument();
+    jest.restoreAllMocks();
+
+    console.log(history.location.pathname);
+
+    const recipeDetails = await screen.findByTestId('recipe-title');
+    await waitFor(() => expect(recipeDetails).toBeInTheDocument());
 
     console.log(history.location.pathname);
     expect(history.location.pathname).toBe('/drinks/178319');
