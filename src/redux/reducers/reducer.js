@@ -8,7 +8,6 @@ import {
 
 const INITIAL_STATE = {
   isSearchBarEnabled: false,
-  detailId: '',
   categorieFilter: '',
   recipes: [],
   categories: [],

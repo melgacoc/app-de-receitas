@@ -81,7 +81,7 @@ function DoneRecipes() {
         </button>
         { link && <span>Link copied!</span>}
       </div>
-      { filtered ? filtered.map((itens, index) => (
+      { filtered && filtered.map((itens, index) => (
         <div data-testid="recipes-itens" key={ itens.name }>
           <Link to={ `/${itens.type}s/${itens.id}` }>
             <img
@@ -124,7 +124,7 @@ function DoneRecipes() {
               {tag}
             </span>)) : null}
         </div>
-      )) : null}
+      ))}
     </div>
   );
 }

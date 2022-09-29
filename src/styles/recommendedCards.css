@@ -1,0 +1,26 @@
+img {
+  max-width: 100%;
+}
+
+.carousel-card img {
+  width: 200px;
+}
+
+.cards-container {
+  border: 1px red solid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.start-recipe-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 10;
+}
+
+.start-recipe-button {
+  bottom: 0;
+  position: fixed;
+}

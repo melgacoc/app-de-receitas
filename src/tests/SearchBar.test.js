@@ -39,7 +39,7 @@ describe('Testes do componente SearchBar', () => {
   });
 
   test('Se ao clicar no botão de pesquisa no Header, o searchBar aparece', async () => {
-    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+    const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
     const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
@@ -49,6 +49,10 @@ describe('Testes do componente SearchBar', () => {
     expect(searchHeaderButton).toBeInTheDocument();
 
     userEvent.click(searchHeaderButton);
+
+    const { reducer: { isSearchBarEnabled } } = store.getState();
+
+    expect(isSearchBarEnabled).toBe(true);
 
     const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
     expect(searchInput).toBeInTheDocument();
@@ -245,7 +249,9 @@ describe('Testes do componente SearchBar', () => {
     userEvent.click(radioName);
     userEvent.click(searchButton);
 
-    const recipeDetails = await screen.findByText('RecipeDetails');
+    jest.restoreAllMocks();
+
+    const recipeDetails = await screen.findByTestId('recipe-title');
     expect(recipeDetails).toBeInTheDocument();
 
     console.log(history.location.pathname);
@@ -271,8 +277,12 @@ describe('Testes do componente SearchBar', () => {
     userEvent.click(radioName);
     userEvent.click(searchButton);
 
-    const recipeDetails = await screen.findByText('RecipeDetails');
-    expect(recipeDetails).toBeInTheDocument();
+    jest.restoreAllMocks();
+
+    console.log(history.location.pathname);
+
+    const recipeDetails = await screen.findByTestId('recipe-title');
+    await waitFor(() => expect(recipeDetails).toBeInTheDocument());
 
     console.log(history.location.pathname);
     expect(history.location.pathname).toBe('/drinks/178319');
