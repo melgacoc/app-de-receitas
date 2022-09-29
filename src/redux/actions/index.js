@@ -13,7 +13,7 @@ export const SEARCHBAR_STATUS = 'SEARCHBAR_STATUS';
 export const ADD_RECIPES = 'ADD_RECIPES';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_FILTER = 'GET_FILTER';
-export const SET_ID = 'SET_ID';
+export const GET_DETAILS = 'GET_DETAILS';
 
 export const changeSearchBarStatus = (status) => ({ type: SEARCHBAR_STATUS, status });
 
@@ -34,6 +34,13 @@ export function getCategories(payload) {
 export function getFilter(payload) {
   return {
     type: GET_FILTER,
+    payload,
+  };
+}
+
+export function getDetails(payload) {
+  return {
+    type: GET_DETAILS,
     payload,
   };
 }
