@@ -5,7 +5,7 @@ import App from '../App';
 import renderWithRouterAndRedux from './helpers/renderWith';
 import details from './helpers/mockDrinkDetails';
 
-const IN_PROGRESS_PATHNAME = '/drinks/13332/in-progress'
+const IN_PROGRESS_PATHNAME = '/drinks/13332/in-progress';
 
 describe('Testes do componente in Progress', () => {
   beforeEach(() => {
@@ -74,7 +74,7 @@ describe('Testes do componente in Progress', () => {
   test('Se ao clicar no botão de Share, copia a url ', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: [IN_PROGRESS_PATHNAME] });
 
-    window.document.execCommand = jest.fn().mockImplementation(() => 'Link copied!');
+    // window.document.execCommand = jest.fn().mockImplementation(() => 'Link copied!');
 
     const shareBtn = screen.getByTestId('share-btn');
 
