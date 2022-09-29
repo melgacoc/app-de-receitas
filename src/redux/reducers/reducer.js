@@ -3,6 +3,7 @@ import {
   ADD_RECIPES,
   GET_CATEGORIES,
   GET_FILTER,
+  GET_DETAILS,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
   categorieFilter: '',
   recipes: [],
   categories: [],
+  details: {},
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -27,6 +29,10 @@ const reducer = (state = INITIAL_STATE, action) => {
   case GET_FILTER: return {
     ...state,
     categorieFilter: action.payload,
+  };
+  case GET_DETAILS: return {
+    ...state,
+    details: action.payload,
   };
   default: return state;
   }
