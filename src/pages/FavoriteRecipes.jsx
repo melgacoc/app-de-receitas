@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import clipboardCopy from 'clipboard-copy';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
-import Footer from '../components/Footer';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 // const favMock = [
@@ -156,7 +155,6 @@ function FavoriteRecipes() {
             </span>)) : null} */}
         </div>
       )) : null}
-      <Footer />
     </>
   );
 }
