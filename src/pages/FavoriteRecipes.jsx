@@ -5,53 +5,8 @@ import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import Footer from '../components/Footer';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-// import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
-const setLocalStorage = (newFav) => {
-  if (localStorage.getItem('favoriteRecipes')
-  && JSON.parse(localStorage.getItem('favoriteRecipes')).length > 0) {
-    const oldFavs = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    if (oldFavs.some((fav) => fav.id === newFav.id)) {
-      const updateOld = oldFavs.filter((fav) => fav.id !== newFav.id);
-      localStorage.setItem('favoriteRecipes', JSON.stringify(updateOld));
-    } else {
-      oldFavs.push(newFav);
-      localStorage.setItem('favoriteRecipes', JSON.stringify(oldFavs));
-    }
-  } else {
-    const newArrFavs = [newFav];
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newArrFavs));
-  }
-};
-
-const handleFavorites = () => {
-  if (mealOrDrink === 'meals') {
-    const newFav = {
-      id: details.idMeal,
-      type: mealOrDrink,
-      nationality: details.strArea,
-      category: details.strCategory,
-      name: details.strMeal,
-      alcoholicOrNot: '',
-      image: details.strMealThumb,
-    };
-    setLocalStorage(newFav);
-  }
-  if (mealOrDrink === 'drinks') {
-    const newFav = {
-      id: details.idDrink,
-      type: mealOrDrink,
-      nationality: '',
-      category: details.strCategory,
-      name: details.strDrink,
-      alcoholicOrNot: details.strAlcoholic,
-      image: details.strDrinkThumb,
-    };
-    setLocalStorage(newFav);
-  }
-};
-
-// const favRecipes = [
+// const favMock = [
 //   {
 //     id: '52771',
 //     type: 'meal',
@@ -78,16 +33,30 @@ const handleFavorites = () => {
 
 function FavoriteRecipes() {
   const [favorites, setFavorites] = useState([]);
+  const [favFiltered, setFavFiltered] = useState(favorites);
+  const [link, setLink] = useState(false);
+
+  const attLocalStorage = (removeFav) => {
+    const oldFavs = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const updateOld = oldFavs.filter((fav) => fav.image !== removeFav);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(updateOld));
+  };
+
+  const handleFavorites = ({ target }) => {
+    const idRemoveFav = target.id;
+    attLocalStorage(idRemoveFav);
+    setFavFiltered(JSON.parse(localStorage.getItem('favoriteRecipes')));
+  };
 
   useEffect(() => {
+    // localStorage.setItem('favoriteRecipes', JSON.stringify(favMock));
     if (localStorage.getItem('favoriteRecipes')) {
       setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')));
+      setFavFiltered(JSON.parse(localStorage.getItem('favoriteRecipes')));
     }
-    setFavorites(...favorites);
-  }, []);
-
-  const [link, setLink] = useState(false);
-  const [favFiltered, setFavFiltered] = useState(favorites);
+    // setFavFiltered(favMock);
+    // setFavorites(favMock);
+  }, [setFavorites, setFavFiltered]);
 
   const filterRecipe = ({ target }) => {
     if (target.value === 'all') setFavFiltered(favorites);
@@ -135,7 +104,7 @@ function FavoriteRecipes() {
         { link && <span>Link copied!</span>}
       </div>
       { favFiltered ? favFiltered.map((itens, index) => (
-        <div data-testid="recipes-itens" key={ itens.name }>
+        <div data-testid="recipes-itens" key={ itens.image }>
           <Link to={ `/${itens.type}s/${itens.id}` }>
             <img
               width="100px"
@@ -173,18 +142,18 @@ function FavoriteRecipes() {
             type="button"
             key={ index }
             data-testid={ `${index}-horizontal-favorite-btn` }
-            onClick={ handleFavorites }
             src={ blackHeartIcon }
+            onClick={ handleFavorites }
           >
-            <img src={ blackHeartIcon } alt="Fav Icon" />
+            <img id={ itens.image } src={ blackHeartIcon } alt="Fav Icon" />
           </button>
-          { itens.tags.length > 0 ? itens.tags.map((tag) => (
+          {/* { itens.tags.length > 0 ? itens.tags.map((tag) => (
             <span
               key={ tag }
               data-testid={ `${index}-${tag}-horizontal-tag` }
             >
               {tag}
-            </span>)) : null}
+            </span>)) : null} */}
         </div>
       )) : null}
       <Footer />
