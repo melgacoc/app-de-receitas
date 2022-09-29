@@ -11,14 +11,10 @@ export default async function fetchApiMealsFilter({ ingredient, name, firstLette
     return global.alert('Your search must have only 1 (one) character');
   }
 
-  try {
-    const request = await fetch(url());
-    const response = await request.json();
-    if (!response.meals) {
-      return global.alert(HAVENT_FOUND_RECIPES);
-    }
-    return response;
-  } catch (error) {
+  const request = await fetch(url());
+  const response = await request.json();
+  if (!response.meals) {
     return global.alert(HAVENT_FOUND_RECIPES);
   }
+  return response;
 }

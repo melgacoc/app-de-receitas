@@ -13,7 +13,6 @@ export const SEARCHBAR_STATUS = 'SEARCHBAR_STATUS';
 export const ADD_RECIPES = 'ADD_RECIPES';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_FILTER = 'GET_FILTER';
-export const SET_ID = 'SET_ID';
 
 export const changeSearchBarStatus = (status) => ({ type: SEARCHBAR_STATUS, status });
 

@@ -39,7 +39,7 @@ describe('Testes do componente SearchBar', () => {
   });
 
   test('Se ao clicar no botão de pesquisa no Header, o searchBar aparece', async () => {
-    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+    const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const pageTitle = screen.getByTestId(PAGE_TITLE_TESTID);
     const searchHeaderButton = screen.getByTestId(HEADER_BUTTON_TESTID);
@@ -49,6 +49,10 @@ describe('Testes do componente SearchBar', () => {
     expect(searchHeaderButton).toBeInTheDocument();
 
     userEvent.click(searchHeaderButton);
+
+    const { reducer: { isSearchBarEnabled } } = store.getState();
+
+    expect(isSearchBarEnabled).toBe(true);
 
     const searchInput = await screen.findByTestId(SEARCH_INPUT_TESTID);
     expect(searchInput).toBeInTheDocument();

@@ -3,12 +3,10 @@ import {
   ADD_RECIPES,
   GET_CATEGORIES,
   GET_FILTER,
-  SET_ID,
 } from '../actions';
 
 const INITIAL_STATE = {
   isSearchBarEnabled: false,
-  detailId: '',
   categorieFilter: '',
   recipes: [],
   categories: [],
@@ -29,10 +27,6 @@ const reducer = (state = INITIAL_STATE, action) => {
   case GET_FILTER: return {
     ...state,
     categorieFilter: action.payload,
-  };
-  case SET_ID: return {
-    ...state,
-    detailId: action.payload,
   };
   default: return state;
   }

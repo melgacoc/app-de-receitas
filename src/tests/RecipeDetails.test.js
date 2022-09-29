@@ -9,16 +9,21 @@ const MEAL_DETAIL_PATHNAME = '/meals/52977';
 describe('Testes do componente RecipeDetails em meals', () => {
   beforeEach(() => {
     jest.restoreAllMocks();
+    // jest.spyOn(global, 'fetch');
   });
 
   test('Se ao entrar na rota com id 52977 os detalhes da receita aparecem', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: [MEAL_DETAIL_PATHNAME] });
 
+    // await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
+
+    const recommendedMeal = await screen.findByTestId('0-recommendation-card');
+
+    await waitFor(() => expect(recommendedMeal).toBeInTheDocument());
+
     const mealTitle = await screen.findByText('Corba');
 
     await waitFor(() => expect(mealTitle).toBeInTheDocument());
-
-    expect(mealTitle).toBeInTheDocument();
   });
   test('Se ao clicar no botão de Start Recipe muda a rota para 529977/in-progress', async () => {
     const { history } = renderWithRouterAndRedux(
@@ -28,6 +33,8 @@ describe('Testes do componente RecipeDetails em meals', () => {
 
     const startRecipeButton = await screen.findByTestId('start-recipe-btn');
 
+    await waitFor(() => expect(startRecipeButton).toBeInTheDocument());
+
     expect(startRecipeButton).toBeInTheDocument();
 
     userEvent.click(startRecipeButton);
@@ -36,7 +43,7 @@ describe('Testes do componente RecipeDetails em meals', () => {
   });
   // test('Se ao clicar no botão de Share, copia a url ', async () => {
   //   renderWithRouterAndRedux(<App />, { initialEntries: [MEAL_DETAIL_PATHNAME] });
-  //   window.document.execCommand = jest.fn().mockImplementation(() => 'copied');
+  //   window.document.execCommand = jest.fn().mockImplementation(() => 'Link copied!');
 
   //   const recommendedMeal = await screen.findByTestId('0-recommendation-card');
 
@@ -59,16 +66,20 @@ describe('Testes do componente RecipeDetails em drinks', () => {
   test('Se ao entrar na rota com id 13501 os detalhes da receita aparecem', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks/13501'] });
 
+    // jest.spyOn(global, 'fetch');
+
+    // expect(global.fetch).toHaveBeenCalledTimes(2);
+
     const mealTitle = await screen.findByText('ABC');
 
-    expect(mealTitle).toBeInTheDocument();
+    await waitFor(() => expect(mealTitle).toBeInTheDocument());
   });
   test('Se ao clicar no botão de Start Recipe muda a rota para 13501/in-progress', async () => {
     const { history } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks/13501'] });
 
     const startRecipeButton = await screen.findByTestId('start-recipe-btn');
 
-    expect(startRecipeButton).toBeInTheDocument();
+    await waitFor(() => expect(startRecipeButton).toBeInTheDocument());
 
     userEvent.click(startRecipeButton);
 
