@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import FetchDrinkDetail from '../helpers/FetchDrinksAPI';
 import FetchMealDetail from '../helpers/FetchMealsAPI';
 import { getDetails } from '../redux/actions';
-import '../styles/RecipeInProgress.css';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import createDone from '../helpers/detail-functions';
 
 function RecipeInProgress() {
   const dispatch = useDispatch();
@@ -16,12 +16,23 @@ function RecipeInProgress() {
   const mealOrDrink = pathName[1];
   const recipeId = pathName[2];
   const [copy, setCopy] = useState(false);
-  const [ingredients, setIngredients] = useState([]);
+  const [finished, setFinished] = useState([true]);
+  const [allIng, setAllIng] = useState([]);
+  const checkIfFinished = (getObject) => {
+    if (allIng.every((ing) => getObject.includes(ing))) { setFinished(false); }
+  };
+  const [ingredients, setIngredients] = useState(() => {
+    if (localStorage.getItem('inProgressRecipes')
+      && JSON.parse(localStorage.getItem('inProgressRecipes')).some((N) => N[recipeId])) {
+      const currentIng = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      checkIfFinished(currentIng.filter((N) => N[recipeId])[0][recipeId]);
+      return currentIng.filter((N) => N[recipeId])[0][recipeId];
+    } return [];
+  });
   const [favorites, setFavorites] = useState(() => {
     if (localStorage.getItem('favoriteRecipes')) {
       return JSON.parse(localStorage.getItem('favoriteRecipes'));
-    }
-    return [];
+    } return [];
   });
   const details = useSelector(({ reducer }) => reducer.details);
 
@@ -36,43 +47,35 @@ function RecipeInProgress() {
     handleDetailsApi();
   }, [mealOrDrink, recipeId, dispatch]);
   useEffect(() => {
-    if (mealOrDrink === 'meals' && localStorage.getItem(details.idMeal)) {
-      const currentList = JSON.parse(localStorage.getItem(details.idMeal));
-      setIngredients(currentList);
-    }
-    if (mealOrDrink === 'drinks' && localStorage.getItem(details.idDrink)) {
-      const currentList = JSON.parse(localStorage.getItem(details.idDrink));
-      setIngredients(currentList);
-    }
-  }, [details.idMeal, details.idDrink, mealOrDrink]);
+    const keysForIng = Object.keys(details)
+      .filter((str) => (str.includes('strIngredient') && details[str]));
+    const tempIng = [];
+    keysForIng.map((keyV) => tempIng.push(details[keyV]));
+    setAllIng(tempIng);
+  }, [details.idMeal, details.idDrink, mealOrDrink, details]);
 
   const handleAddedIngredient = (event) => {
-    if (mealOrDrink === 'meals') {
-      if (localStorage.getItem(details.idMeal)) {
-        const currentList = JSON.parse(localStorage.getItem(details.idMeal));
-        setIngredients(currentList);
-        currentList.push(event.target.value);
-        localStorage.setItem(details.idMeal, JSON.stringify(currentList));
+    setIngredients([...ingredients, event.target.value]);
+    if (localStorage.getItem('inProgressRecipes')) {
+      const oldIngs = (JSON.parse(localStorage.getItem('inProgressRecipes')));
+      if (oldIngs.some((objectN) => objectN[recipeId])) {
+        oldIngs
+          .filter((N) => N[recipeId])[0][recipeId] = [...ingredients, event.target.value];
+        localStorage.setItem('inProgressRecipes', JSON.stringify(oldIngs));
+        checkIfFinished(oldIngs.filter((N) => N[recipeId])[0][recipeId]);
       } else {
-        const newList = [event.target.value];
-        setIngredients(newList);
-        localStorage.setItem(details.idMeal, JSON.stringify(newList));
+        const newObject = {};
+        newObject[recipeId] = [event.target.value];
+        oldIngs.push(newObject);
+        localStorage.setItem('inProgressRecipes', JSON.stringify(oldIngs));
       }
-    }
-    if (mealOrDrink === 'drinks') {
-      if (localStorage.getItem(details.idDrink)) {
-        const currentList = JSON.parse(localStorage.getItem(details.idDrink));
-        setIngredients(currentList);
-        currentList.push(event.target.value);
-        localStorage.setItem(details.idDrink, JSON.stringify(currentList));
-      } else {
-        const newList = [event.target.value];
-        setIngredients(newList);
-        localStorage.setItem(details.idDrink, JSON.stringify(newList));
-      }
+    } else {
+      const newObject = {};
+      newObject[recipeId] = [event.target.value];
+      const newArray = [newObject];
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newArray));
     }
   };
-
   const setLocalStorage = (newFav) => {
     if (localStorage.getItem('favoriteRecipes')
       && JSON.parse(localStorage.getItem('favoriteRecipes')).length > 0) {
@@ -92,7 +95,6 @@ function RecipeInProgress() {
       localStorage.setItem('favoriteRecipes', JSON.stringify(newArrayFavs));
     }
   };
-
   const handleFavorite = () => {
     if (mealOrDrink === 'meals') {
       const newFav = {
@@ -117,8 +119,8 @@ function RecipeInProgress() {
       setLocalStorage(newFav);
     }
   };
-
   const handleFinished = () => {
+    createDone(details, mealOrDrink);
     history.push('/done-recipes');
   };
 
@@ -126,35 +128,35 @@ function RecipeInProgress() {
     <div>
       <header>
         {mealOrDrink === 'meals'
-        && (
-          <div>
-            <img
-              data-testid="recipe-photo"
-              className="thumbnail"
-              src={ details.strMealThumb }
-              alt={ details.strMeal }
-            />
-            <h1
-              data-testid="recipe-title"
-            >
-              { details.strMeal }
-            </h1>
-          </div>)}
+          && (
+            <div>
+              <img
+                data-testid="recipe-photo"
+                className="thumbnail"
+                src={ details.strMealThumb }
+                alt={ details.strMeal }
+              />
+              <h1
+                data-testid="recipe-title"
+              >
+                { details.strMeal }
+              </h1>
+            </div>)}
         {mealOrDrink === 'drinks'
-        && (
-          <div>
-            <img
-              data-testid="recipe-photo"
-              className="thumbnail"
-              src={ details.strDrinkThumb }
-              alt={ details.strDrink }
-            />
-            <h1
-              data-testid="recipe-title"
-            >
-              { details.strDrink }
-            </h1>
-          </div>)}
+          && (
+            <div>
+              <img
+                data-testid="recipe-photo"
+                className="thumbnail"
+                src={ details.strDrinkThumb }
+                alt={ details.strDrink }
+              />
+              <h1
+                data-testid="recipe-title"
+              >
+                { details.strDrink }
+              </h1>
+            </div>)}
         <button
           data-testid="share-btn"
           type="button"
@@ -163,30 +165,18 @@ function RecipeInProgress() {
             setCopy(true);
           } }
         >
-          {(copy)
-            ? <p>Link copied!</p>
-            : <p>Share</p>}
+          {(copy) ? <p>Link copied!</p> : <p>Share</p>}
         </button>
         <button
           type="button"
           onClick={ handleFavorite }
         >
-          {mealOrDrink === 'drinks'
-          && <img
+          <img
             data-testid="favorite-btn"
-            src={ favorites
-              .some((fav) => fav.id === details.idDrink)
+            src={ favorites.some((fav) => fav.id === recipeId)
               ? blackHeartIcon : whiteHeartIcon }
             alt="Favorite icon"
-          />}
-          {mealOrDrink === 'meals'
-          && <img
-            data-testid="favorite-btn"
-            src={ favorites
-              .some((fav) => fav.id === details.idMeal)
-              ? blackHeartIcon : whiteHeartIcon }
-            alt="Favorite icon"
-          />}
+          />
         </button>
         <span
           data-testid="recipe-category"
@@ -195,39 +185,31 @@ function RecipeInProgress() {
         </span>
       </header>
       <body>
-        {(details && ingredients)
-          && (
-            <ul>
-              {
-                Object.keys(details)
-                  .filter((str) => (
-                    str.includes('strIngredient') && details[str]
-                  ))
+        {(details && allIng)
+            && (
+              <ul>
+                {allIng
                   .map((strIngre, strIndex) => (
                     <li key={ strIndex }>
                       <label
                         data-testid={ `${strIndex}-ingredient-step` }
                         style={ {
-                          textDecoration: ingredients.includes(`${strIndex}`)
-                            && 'line-through',
+                          textDecoration: ingredients.includes(`${strIngre}`)
+                              && 'line-through',
                         } }
                         htmlFor={ strIndex }
                       >
                         <input
-                          value={ strIndex }
+                          value={ strIngre }
                           type="checkbox"
-                          checked
-                          // ={ ingredients.includes(`${strIndex}`) }
+                          checked// ={ ingredients.includes(`${strIndex}`) }
                           onChange={ handleAddedIngredient }
                         />
-                        {details[strIngre]}
+                        {strIngre}
                       </label>
-                    </li>))
-              }
-            </ul>)}
-        <p
-          data-testid="instructions"
-        >
+                    </li>))}
+              </ul>)}
+        <p data-testid="instructions">
           {details.strInstructions}
         </p>
       </body>
@@ -235,7 +217,7 @@ function RecipeInProgress() {
         <button
           data-testid="finish-recipe-btn"
           type="button"
-          // disabled={ checkChecked }
+          disabled={ finished }
           onClick={ handleFinished }
         >
           Finished
@@ -244,5 +226,4 @@ function RecipeInProgress() {
     </div>
   );
 }
-
 export default RecipeInProgress;
