@@ -7,6 +7,8 @@ export default function createDone(recDetail, type) {
       category: recDetail.strCategory,
       name: recDetail.strMeal,
       alcoholicOrNot: '',
+      tags: recDetail.strTags,
+      doneDate: new Date(),
       image: recDetail.strMealThumb };
     if (localStorage.getItem('doneRecipes')) {
       const oldDones = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -25,6 +27,8 @@ export default function createDone(recDetail, type) {
       category: recDetail.strCategory,
       name: recDetail.strDrink,
       alcoholicOrNot: recDetail.strAlcoholic,
+      tags: recDetail.strTags,
+      doneDate: new Date(),
       image: recDetail.strDrinkThumb };
     if (localStorage.getItem('doneRecipes')) {
       const oldDones = JSON.parse(localStorage.getItem('doneRecipes'));
