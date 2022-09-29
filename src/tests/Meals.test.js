@@ -108,7 +108,14 @@ describe('Testes do componente Meals', () => {
     const brownChicken = await screen.findByTestId('0-recipe-card');
     await waitFor(() => expect(brownChicken).toBeInTheDocument());
 
+    jest.restoreAllMocks();
+
+    jest.spyOn(global, 'fetch');
+
     userEvent.click(brownChicken);
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
+
     expect(history.location.pathname).toBe('/meals/52977');
   });
 });

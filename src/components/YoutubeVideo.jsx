@@ -4,8 +4,8 @@ function YoutubeVideo(url) {
   return (
     <div data-testid="video">
       <iframe
-        width="853"
-        height="480"
+        width="360"
+        height="400"
         src={ `https://www.youtube.com/embed/${url}` }
         frameBorder="0"
         allow="accelerometer;

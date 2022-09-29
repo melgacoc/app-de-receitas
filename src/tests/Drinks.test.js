@@ -41,6 +41,8 @@ describe('Testes do componente Drinks', () => {
     const catBtn = container.getElementsByClassName('categoryButton');
     await waitFor(() => expect(catBtn.length).toBe(6));
 
+    jest.restoreAllMocks();
+
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockReturnValue(ordinaryDrinks),
@@ -107,6 +109,10 @@ describe('Testes do componente Drinks', () => {
 
     const firstVodka = await screen.findByTestId('0-recipe-card');
     await waitFor(() => expect(firstVodka).toBeInTheDocument());
+
+    jest.restoreAllMocks();
+
+    jest.spyOn(global, 'fetch');
 
     userEvent.click(firstVodka);
     expect(history.location.pathname).toBe('/drinks/15997');
