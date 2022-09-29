@@ -18,3 +18,10 @@ export async function getDrinksByCategory(cat) {
   const data = await response.json();
   return data;
 }
+
+export default async function FetchDrinkDetail(id) {
+  const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data.drinks[0];
+}
