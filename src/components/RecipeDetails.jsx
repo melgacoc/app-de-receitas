@@ -9,11 +9,18 @@ import CardDrinkDetails from './CardDrinkDetails';
 import CardMealDetails from './CardMealDetails';
 import RecommendedCards from './RecommendedCards';
 import shareIcon from '../images/shareIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState([]);
   const [recommendedRecipes, setRecommendedRecips] = useState([]);
   const [link, setLink] = useState(false);
+  const [favorites, setFavorites] = useState(() => {
+    if (localStorage.getItem('favoriteRecipes')) {
+      return JSON.parse(localStorage.getItem('favoriteRecipes'));
+    } return [];
+  });
   const history = useHistory();
   const location = useLocation();
   const pathName = location.pathname.split('/');
@@ -49,6 +56,51 @@ function RecipeDetails() {
     }
   }, [mealOrDrink, recipeId]);
 
+  const setLocalStorage = (newFav) => {
+    if (localStorage.getItem('favoriteRecipes')
+      && JSON.parse(localStorage.getItem('favoriteRecipes')).length > 0) {
+      const oldFavs = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      if (oldFavs.some((fav) => fav.id === newFav.id)) {
+        const updateOld = oldFavs.filter((fav) => fav.id !== newFav.id);
+        setFavorites(updateOld);
+        localStorage.setItem('favoriteRecipes', JSON.stringify(updateOld));
+      } else {
+        oldFavs.push(newFav);
+        setFavorites(oldFavs);
+        localStorage.setItem('favoriteRecipes', JSON.stringify(oldFavs));
+      }
+    } else {
+      const newArrayFavs = [newFav];
+      setFavorites(newArrayFavs);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newArrayFavs));
+    }
+  };
+
+  const handleFavorite = () => {
+    if (mealOrDrink === 'meals') {
+      const newFav = {
+        id: recipe.idMeal,
+        type: 'meal',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        name: recipe.strMeal,
+        alcoholicOrNot: '',
+        image: recipe.strMealThumb };
+      setLocalStorage(newFav);
+    }
+    if (mealOrDrink === 'drinks') {
+      const newFav = {
+        id: recipe.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: recipe.strCategory,
+        name: recipe.strDrink,
+        alcoholicOrNot: recipe.strAlcoholic,
+        image: recipe.strDrinkThumb };
+      setLocalStorage(newFav);
+    }
+  };
+
   return (
     <div>
       { mealOrDrink === 'meals'
@@ -73,7 +125,17 @@ function RecipeDetails() {
           </button>
           { link && <span>Link copied!</span>}
         </div>
-        <button type="button" data-testid="favorite-btn">Favorite</button>
+        <button
+          type="button"
+          onClick={ handleFavorite }
+        >
+          <img
+            data-testid="favorite-btn"
+            src={ favorites.some((fav) => fav.id === recipeId)
+              ? blackHeartIcon : whiteHeartIcon }
+            alt="Favorite icon"
+          />
+        </button>
       </div>
       <div className="start-recipe-container">
         { doneRecipesStoraged === 'empty'
