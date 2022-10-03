@@ -7,13 +7,13 @@ img {
 }
 
 .cards-container {
-  border: 1px red solid;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
 .start-recipe-container {
+  background-color: rgb(65, 25, 127);
   display: flex;
   justify-content: center;
   width: 100%;

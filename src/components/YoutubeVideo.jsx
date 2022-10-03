@@ -2,7 +2,7 @@ import React from 'react';
 
 function YoutubeVideo(url) {
   return (
-    <div data-testid="video">
+    <div className="video" data-testid="video">
       <iframe
         width="360"
         height="400"

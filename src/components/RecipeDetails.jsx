@@ -11,6 +11,7 @@ import RecommendedCards from './RecommendedCards';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import '../styles/RecipeDetails.css';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState([]);
@@ -103,29 +104,24 @@ function RecipeDetails() {
 
   return (
     <div>
-      { mealOrDrink === 'meals'
-        ? CardMealDetails(recipe)
-        : CardDrinkDetails(recipe) }
-      { RecommendedCards(recipesFiltered) }
-      <div>
-        <div>
-          <button
-            type="button"
-            data-testid="share-btn"
-            onClick={ () => {
-              clipboardCopy(`http://localhost:3000${location.pathname}`);
-              setLink(true);
-            } }
-            src={ shareIcon }
-          >
-            <img
-              src={ shareIcon }
-              alt="Share Icon"
-            />
-          </button>
-          { link && <span>Link copied!</span>}
-        </div>
+      <div className="btn-container">
         <button
+          className="share-btn"
+          type="button"
+          data-testid="share-btn"
+          onClick={ () => {
+            clipboardCopy(`http://localhost:3000${location.pathname}`);
+            setLink(true);
+          } }
+          src={ shareIcon }
+        >
+          <img
+            src={ shareIcon }
+            alt="Share Icon"
+          />
+        </button>
+        <button
+          className="favorite-btn"
           type="button"
           onClick={ handleFavorite }
         >
@@ -136,7 +132,12 @@ function RecipeDetails() {
             alt="Favorite icon"
           />
         </button>
+        { link && <span>Link copied!</span>}
       </div>
+      { mealOrDrink === 'meals'
+        ? CardMealDetails(recipe)
+        : CardDrinkDetails(recipe) }
+      { RecommendedCards(recipesFiltered) }
       <div className="start-recipe-container">
         { doneRecipesStoraged === 'empty'
         && (
