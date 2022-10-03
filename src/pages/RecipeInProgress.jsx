@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import clipboardCopy from 'clipboard-copy';
 import FetchDrinkDetail from '../helpers/FetchDrinksAPI';
 import FetchMealDetail from '../helpers/FetchMealsAPI';
 import { getDetails } from '../redux/actions';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import createDone from '../helpers/detail-functions';
+import createDone from '../helpers/recipeInProgressHelp';
 
 function RecipeInProgress() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ function RecipeInProgress() {
   const [finished, setFinished] = useState([true]);
   const [allIng, setAllIng] = useState([]);
   const checkIfFinished = (getObject) => {
-    if (allIng.some((ing) => getObject.includes(ing))) { setFinished(false); }
+    if (allIng.every((ing) => getObject.includes(ing))) { setFinished(false); }
   };
   const [ingredients, setIngredients] = useState(() => {
     if (localStorage.getItem('inProgressRecipes')
@@ -120,6 +121,7 @@ function RecipeInProgress() {
     }
   };
   const handleFinished = () => {
+    console.log('oi');
     createDone(details, mealOrDrink);
     history.push('/done-recipes');
   };
@@ -157,16 +159,19 @@ function RecipeInProgress() {
                 { details.strDrink }
               </h1>
             </div>)}
-        <button
-          data-testid="share-btn"
-          type="button"
-          onClick={ () => {
-            navigator.clipboard.writeText(`http://localhost:3000/${mealOrDrink}/${recipeId}`);
-            setCopy(true);
-          } }
-        >
-          {(copy) ? <p>Link copied!</p> : <p>Share</p>}
-        </button>
+        <div>
+          <button
+            type="button"
+            data-testid="share-btn"
+            onClick={ () => {
+              clipboardCopy(`http://localhost:3000/${mealOrDrink}/${recipeId}`);
+              setCopy(true);
+            } }
+          >
+            Copy link
+          </button>
+          {copy && <span>Link copied!</span>}
+        </div>
         <button
           type="button"
           onClick={ handleFavorite }
@@ -198,11 +203,12 @@ function RecipeInProgress() {
                               && 'line-through',
                         } }
                         htmlFor={ strIndex }
+                        onChange={ handleAddedIngredient }
                       >
                         <input
                           value={ strIngre }
                           type="checkbox"
-                          checked// ={ ingredients.includes(`${strIndex}`) }
+                          checked={ ingredients.includes(`${strIngre}`) }
                           onChange={ handleAddedIngredient }
                         />
                         {strIngre}
