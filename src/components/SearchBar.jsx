@@ -38,7 +38,7 @@ function SearchBar() {
 
   return (
     <div className="search-bar">
-      <div>
+      <div className="search-bar-input">
         <input
           data-testid="search-input"
           type="text"
@@ -47,8 +47,8 @@ function SearchBar() {
         />
       </div>
       <div className="search-bar-radios">
-        <div>
-          <span>Ingredient</span>
+        <div className="search-radio">
+          <h4>Ingredient</h4>
           <input
             type="radio"
             name="radio-filter"
@@ -57,8 +57,8 @@ function SearchBar() {
             value="ingredient"
           />
         </div>
-        <div>
-          <span>Name</span>
+        <div className="search-radio">
+          <h4>Name</h4>
           <input
             type="radio"
             name="radio-filter"
@@ -67,8 +67,8 @@ function SearchBar() {
             value="name"
           />
         </div>
-        <div>
-          <span>First Letter</span>
+        <div className="search-radio">
+          <h4>First Letter</h4>
           <input
             type="radio"
             name="radio-filter"
@@ -83,6 +83,7 @@ function SearchBar() {
           type="button"
           data-testid="exec-search-btn"
           onClick={ () => handleFetchApi() }
+          className="btn btn-warning"
         >
           Search
         </button>
