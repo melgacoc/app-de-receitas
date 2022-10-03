@@ -224,7 +224,7 @@ function RecipeInProgress() {
           data-testid="finish-recipe-btn"
           type="button"
           disabled={ finished }
-          onClick={ handleFinished }
+          onClick={ () => handleFinished }
         >
           Finished
         </button>
