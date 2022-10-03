@@ -1,58 +1,54 @@
 import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import mockLocalStorage from './helpers/mockLocalStorage';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
 import renderWithRouterAndRedux from './helpers/renderWith';
-import userEvent from '@testing-library/user-event';
-import { screen, waitFor } from '@testing-library/react';
 
 describe('FavoriteRecipes page', () => {
-
-  const mealTest =[{
+  const mealTest = [{
     id: '52955',
     type: 'meal',
     nationality: 'Chinese',
     category: 'Vegetarian',
     alcoholicOrNot: '',
     name: 'Egg Drop Soup',
-    image: 'https://www.themealdb.com/images/media/meals/1529446137.jpg'
+    image: 'https://www.themealdb.com/images/media/meals/1529446137.jpg',
   }];
-  
-  
+
   beforeEach(() => {
-  //const mock = mockLocalStorage();
-  
-});
-// test.only('', () =>{
-     // renderWithRouterAndRedux(<FavoriteRecipes />);
-     // const a = localStorage.getItem('favoriteRecipes');
-     // console.log(a);
-     // });
+  // const mock = mockLocalStorage();
 
-     test('Testa se o elementos são recuperado do localStorage', async () => {
-       localStorage.clear();
-       localStorage.setItem('favoriteRecipes', JSON.stringify(mockLocalStorage));
+  });
+  // test.only('', () =>{
+  // renderWithRouterAndRedux(<FavoriteRecipes />);
+  // const a = localStorage.getItem('favoriteRecipes');
+  // console.log(a);
+  // });
 
-       renderWithRouterAndRedux(<FavoriteRecipes />);
+  test('Testa se o elementos são recuperado do localStorage', async () => {
+    localStorage.clear();
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mockLocalStorage));
 
-      const mealTitle = await screen.findByTestId('0-horizontal-name');
-      expect(mealTitle).toBeInTheDocument();
-      const drinkTitle = await screen.findByTestId('1-horizontal-name');
-      expect(drinkTitle).toBeInTheDocument();
+    renderWithRouterAndRedux(<FavoriteRecipes />);
+
+    const mealTitle = await screen.findByTestId('0-horizontal-name');
+    expect(mealTitle).toBeInTheDocument();
+    const drinkTitle = await screen.findByTestId('1-horizontal-name');
+    expect(drinkTitle).toBeInTheDocument();
   });
 
-    test('Testa se o elemente é removido da tela', async () => {
+  test('Testa se o elemente é removido da tela', async () => {
+    localStorage.clear();
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mealTest));
 
-      localStorage.clear()
-      localStorage.setItem('favoriteRecipes', JSON.stringify(mealTest));
+    renderWithRouterAndRedux(<FavoriteRecipes />);
 
-      renderWithRouterAndRedux(<FavoriteRecipes />);
-      
-      const favButton = await screen.findByTestId('0-horizontal-favorite-btn');
-      userEvent.click(favButton);
+    const favButton = await screen.findByTestId('0-horizontal-favorite-btn');
+    userEvent.click(favButton);
 
-
-      //const mealTitle = await screen.findByTestId('0-horizontal-name');
-      //await waitForElementToBeRemoved(mealTitle);
+    // const mealTitle = await screen.findByTestId('0-horizontal-name');
+    // await waitForElementToBeRemoved(mealTitle);
   });
 
   test('Testa os filtros da página', () => {
@@ -69,7 +65,6 @@ describe('FavoriteRecipes page', () => {
 
     const allFilter = screen.getByTestId('filter-by-all-btn');
     userEvent.click(allFilter);
-
   });
   test('Se ao clicar no botão de Share, copia a url ', async () => {
     renderWithRouterAndRedux(<FavoriteRecipes />);
@@ -87,4 +82,3 @@ describe('FavoriteRecipes page', () => {
     expect(copiedLink).toBeInTheDocument();
   });
 });
-
