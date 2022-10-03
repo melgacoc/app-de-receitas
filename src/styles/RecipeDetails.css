@@ -1,0 +1,41 @@
+.start-recipe-container {
+  background-color: rgb(65, 25, 127);
+  width: 100vw;
+}
+
+.start-recipe-button {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 80%;
+}
+
+.btn-container {
+  margin-left: 380px;
+  margin-top: 410px;
+  position: absolute;
+}
+
+.btn-container span {
+  font-size: 12px;
+}
+
+.share-btn {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 3px;
+  padding: 5px;
+  width: 50px;
+}
+
+.favorite-btn {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 50%;
+  height: 50px;
+  padding: 5px;
+  width: 50px;
+}

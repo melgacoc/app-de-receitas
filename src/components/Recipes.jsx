@@ -28,9 +28,10 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
   const handleRecipeDetails = (event) => {
     history.push(`${pathname}/${event.target.name}`);
   };
+
   return (
     <div>
-      <div id="categories" key="categories">
+      <div className="categories-box" id="categories" key="categories">
         {categories
           .filter((cat, index) => (
             index <= MAX_NUMBER_CATEGORIES
@@ -56,7 +57,12 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
           All
         </button>
       </div>
-      <div id="meal-recipes" key="meal-recipes">
+      <div
+        className={ `${type === 'meals'
+          ? 'meal-container' : ''}` }
+        id="meal-recipes"
+        key="meal-recipes"
+      >
         {type === 'meals'
           && recipes
             .filter((_, index) => (
@@ -87,7 +93,12 @@ function Recipes({ type, recipes, categories, categorieFilter }) {
               </button>
             ))}
       </div>
-      <div id="drinks-recipes" key="drinks-recipes">
+      <div
+        className={ `${type === 'drinks'
+          ? 'meal-container' : ''}` }
+        id="drinks-recipes"
+        key="drinks-recipes"
+      >
         {type === 'drinks'
           && recipes
             .filter((_, index) => (

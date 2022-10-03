@@ -1,3 +1,45 @@
 .thumbnail {
   width: 100px;
 }
+
+.categories-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+.categories-box button {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  margin-top: 10px;
+  padding: 5px;
+  width: 33%;
+}
+
+.meal-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding-bottom: 80px;
+}
+
+.meal-container button {
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+  justify-content: center;
+  width: 45%;
+}
+
+.meal-container img {
+  width: 100%;
+}

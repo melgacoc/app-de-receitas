@@ -22,14 +22,17 @@ function CardDrinkDetails(recipe) {
     return result;
   };
   return (
-    <div>
+    <div className="recipe-container">
       <h1 data-testid="recipe-title">{ strDrink }</h1>
       <img src={ strDrinkThumb } alt={ strDrink } data-testid="recipe-photo" />
-      <h3 data-testid="recipe-category">{ strAlcoholic }</h3>
-      <ul>
-        { recipesAndMeasures() }
-      </ul>
-      <h6 data-testid="instructions">{ strInstructions }</h6>
+      <div className="details-container">
+        <h3 data-testid="recipe-category">{ strAlcoholic }</h3>
+        <h3>Ingredients</h3>
+        <ul className="ingredients-container">
+          { recipesAndMeasures() }
+        </ul>
+        <h6 className="instructions" data-testid="instructions">{ strInstructions }</h6>
+      </div>
     </div>
   );
 }
