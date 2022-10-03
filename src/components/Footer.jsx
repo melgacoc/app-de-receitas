@@ -7,7 +7,7 @@ import mealIcon from '../images/mealIcon.svg';
 function Footer() {
   const history = useHistory();
   return (
-    <footer data-testid="footer">
+    <footer data-testid="footer" className="footer-container">
       <button type="button" onClick={ () => history.push('./drinks') }>
         <img
           data-testid="drinks-bottom-btn"
