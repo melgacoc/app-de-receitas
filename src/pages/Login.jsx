@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import '../styles/login.css';
+import logoRecipesApp from '../images/logoRecipesApp.svg';
 
 function Login({ history }) {
   const [profile, setProfile] = useState({
@@ -37,33 +39,42 @@ function Login({ history }) {
   };
 
   return (
-    <div>
-      <form onSubmit={ onLogin }>
-        <input
-          type="email"
-          name="loginemail"
-          data-testid="email-input"
-          value={ profile.email }
-          onChange={ handleChange }
-          placeholder="E-mail"
-        />
-        <input
-          type="password"
-          name="password"
-          data-testid="password-input"
-          value={ profile.password }
-          onChange={ handleChange }
-          placeholder="Password"
-        />
-        <button
-          type="submit"
-          data-testid="login-submit-btn"
-          disabled={ disabled }
-        >
-          Enter
-        </button>
-      </form>
-    </div>
+    <section className="login-container">
+      <div className="image-container">
+        <img src={ logoRecipesApp } alt="recipes logo" />
+      </div>
+      <div>
+        <form onSubmit={ onLogin } className="form-container">
+          <h4>Login</h4>
+          <input
+            type="email"
+            name="loginemail"
+            data-testid="email-input"
+            value={ profile.email }
+            onChange={ handleChange }
+            placeholder="E-mail"
+            className="form-control"
+          />
+          <input
+            type="password"
+            name="password"
+            data-testid="password-input"
+            value={ profile.password }
+            onChange={ handleChange }
+            placeholder="Password"
+            className="form-control input-color"
+          />
+          <button
+            type="submit"
+            data-testid="login-submit-btn"
+            disabled={ disabled }
+            className="btn btn-warning"
+          >
+            Enter
+          </button>
+        </form>
+      </div>
+    </section>
   );
 }
 
