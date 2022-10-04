@@ -1,0 +1,92 @@
+.categories-btn-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.categories-btn-container button {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  margin-top: 10px;
+  padding: 5px;
+  width: 30%;
+}
+
+.share-btn {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 3px;
+  padding: 5px;
+  width: 50px;
+}
+
+.fav-btn {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 3px;
+  padding: 5px;
+  width: 50px;
+}
+
+.fav-btn img {
+  height: 30px;
+  width: 30px;
+}
+
+.share-btn img {
+  height: 30px;
+  width: 30px;
+}
+
+.fav-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.recipe-card-fav {
+  background-color: rgb(235, 235, 235);
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  padding-bottom: 12px;
+  width: 45%;
+}
+
+.recipe-card-fav img {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  width: 100%;
+}
+
+.recipe-card-fav h2 {
+  color: rgb(46, 44, 44);
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.recipe-card-fav h4 {
+  color: rgb(46, 44, 44);
+  font-size: 20px;
+  padding: 15px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.recipe-card-fav span {
+  font-size: 12px;
+}
