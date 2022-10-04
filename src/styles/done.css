@@ -8,53 +8,53 @@ a {
 }
 
 .categoryButton{
-  border: 1px solid rgba(255, 255, 255, 0);
   background-color: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
 }
 
 .recipe-body {
-  padding-top: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 15px
+  gap: 15px;
+  flex-direction: column;
+  padding-top: 20px;
 }
 
 .recipes-itens {
   display: flex;
-  flex-direction: row;
-  width: 318px;
-  height: 135px;
   border: 1px solid rgb(179, 179, 179);
+  flex-direction: row;
+  height: 135px;
+  width: 318px;
 }
 
 .recipe-image {
-  width: 159px;
   height: 135px;
+  width: 159px;
 }
 
 .rec-description {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 159px;
+  flex-direction: column;
   height: 135px;
   justify-content: space-evenly;
+  width: 159px;
 }
 
 .rec-description h2 {
-  font-size: 12px;
   color: black;
+  font-size: 12px;
 }
 
 .rec-description h4 {
-  font-size: 10px;
   color: #797D86;
+  font-size: 10px;
 }
 
 .categoryButtonShare {
-  border: 1px solid rgba(255, 255, 255, 0);
   background-color: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
   width: 23px;
 }
 
@@ -68,8 +68,8 @@ a {
 }
 
 .tag-value {
-  font-size: 10px;
   background-color: #D9D9D9;
   border-radius: 10px;
+  font-size: 10px;
   padding: 0px 7px;
 }
