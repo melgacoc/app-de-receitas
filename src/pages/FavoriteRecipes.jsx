@@ -4,6 +4,7 @@ import clipboardCopy from 'clipboard-copy';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../styles/FavoriteRecipes.css';
 
 // const favMock = [
 //   {
@@ -69,9 +70,8 @@ function FavoriteRecipes() {
   return (
     <>
       <Header title="Favorite Recipes" profile="true" search="false" />
-      <div>
+      <div className="categories-btn-container">
         <button
-          className="categoryButton"
           data-testid="filter-by-all-btn"
           key="All"
           value="all"
@@ -81,7 +81,6 @@ function FavoriteRecipes() {
           All
         </button>
         <button
-          className="categoryButton"
           data-testid="filter-by-meal-btn"
           key="Meals"
           value="meal"
@@ -91,7 +90,6 @@ function FavoriteRecipes() {
           Meals
         </button>
         <button
-          className="categoryButton"
           data-testid="filter-by-drink-btn"
           key="Drink"
           value="drink"
@@ -100,61 +98,63 @@ function FavoriteRecipes() {
         >
           Drinks
         </button>
-        { link && <span>Link copied!</span>}
       </div>
-      { favFiltered ? favFiltered.map((itens, index) => (
-        <div data-testid="recipes-itens" key={ itens.image }>
-          <Link to={ `/${itens.type}s/${itens.id}` }>
-            <img
-              width="100px"
-              data-testid={ `${index}-horizontal-image` }
-              src={ itens.image }
-              alt={ itens.name }
-            />
-          </Link>
-          <Link to={ `/${itens.type}s/${itens.id}` }>
-            <h2 data-testid={ `${index}-horizontal-name` }>{itens.name}</h2>
-          </Link>
-          <h4
-            data-testid={ `${index}-horizontal-top-text` }
+      <div className="fav-container">
+        { favFiltered ? favFiltered.map((itens, index) => (
+          <div
+            className="recipe-card-fav"
+            data-testid="recipes-itens"
+            key={ itens.image }
           >
-            {`${itens.nationality} - ${itens.category} - ${itens.alcoholicOrNot}`}
-          </h4>
-          <span data-testid={ `${index}-horizontal-done-date` }>{itens.doneDate}</span>
-          <button
-            className="categoryButton"
-            data-testid={ `${index}-horizontal-share-btn` }
-            key="Meals"
-            type="button"
-            onClick={ () => {
-              clipboardCopy(`http://localhost:3000/meals/${itens.id}`);
-              setLink(true);
-            } }
-            src={ shareIcon }
-          >
-            <img
-              src={ shareIcon }
-              alt="Share Icon"
-            />
-          </button>
-          <button
-            type="button"
-            key={ index }
-            data-testid={ `${index}-horizontal-favorite-btn` }
-            src={ blackHeartIcon }
-            onClick={ handleFavorites }
-          >
-            <img id={ itens.image } src={ blackHeartIcon } alt="Fav Icon" />
-          </button>
-          {/* { itens.tags.length > 0 ? itens.tags.map((tag) => (
-            <span
-              key={ tag }
-              data-testid={ `${index}-${tag}-horizontal-tag` }
+            <Link to={ `/${itens.type}s/${itens.id}` }>
+              <img
+                width="100px"
+                data-testid={ `${index}-horizontal-image` }
+                src={ itens.image }
+                alt={ itens.name }
+              />
+            </Link>
+            <Link to={ `/${itens.type}s/${itens.id}` }>
+              <h2 data-testid={ `${index}-horizontal-name` }>{itens.name}</h2>
+            </Link>
+            <h4
+              data-testid={ `${index}-horizontal-top-text` }
             >
-              {tag}
-            </span>)) : null} */}
-        </div>
-      )) : null}
+              {`${itens.nationality} ${itens.category} ${itens.alcoholicOrNot}`}
+            </h4>
+            <span data-testid={ `${index}-horizontal-done-date` }>{itens.doneDate}</span>
+            <div>
+              <button
+                className="share-btn"
+                data-testid={ `${index}-horizontal-share-btn` }
+                key="Meals"
+                type="button"
+                onClick={ () => {
+                  clipboardCopy(`http://localhost:3000/meals/${itens.id}`);
+                  setLink(true);
+                } }
+                src={ shareIcon }
+              >
+                <img
+                  src={ shareIcon }
+                  alt="Share Icon"
+                />
+              </button>
+              <button
+                className="fav-btn"
+                type="button"
+                key={ index }
+                data-testid={ `${index}-horizontal-favorite-btn` }
+                src={ blackHeartIcon }
+                onClick={ handleFavorites }
+              >
+                <img id={ itens.image } src={ blackHeartIcon } alt="Fav Icon" />
+              </button>
+              { link && <span>Link copied!</span>}
+            </div>
+          </div>
+        )) : null}
+      </div>
     </>
   );
 }
