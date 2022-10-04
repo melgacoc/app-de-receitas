@@ -8,6 +8,8 @@ import { getDetails } from '../redux/actions';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import createDone from '../helpers/recipeInProgressHelp';
+import '../styles/recipeInProgress.css';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeInProgress() {
   const dispatch = useDispatch();
@@ -128,53 +130,26 @@ function RecipeInProgress() {
 
   return (
     <div>
-      <header>
-        {mealOrDrink === 'meals'
-          && (
-            <div>
-              <img
-                data-testid="recipe-photo"
-                className="thumbnail"
-                src={ details.strMealThumb }
-                alt={ details.strMeal }
-              />
-              <h1
-                data-testid="recipe-title"
-              >
-                { details.strMeal }
-              </h1>
-            </div>)}
-        {mealOrDrink === 'drinks'
-          && (
-            <div>
-              <img
-                data-testid="recipe-photo"
-                className="thumbnail"
-                src={ details.strDrinkThumb }
-                alt={ details.strDrink }
-              />
-              <h1
-                data-testid="recipe-title"
-              >
-                { details.strDrink }
-              </h1>
-            </div>)}
-        <div>
-          <button
-            type="button"
-            data-testid="share-btn"
-            onClick={ () => {
-              clipboardCopy(`http://localhost:3000/${mealOrDrink}/${recipeId}`);
-              setCopy(true);
-            } }
-          >
-            Copy link
-          </button>
-          {copy && <span>Link copied!</span>}
-        </div>
+      <div className="btn-inprogress-container">
+        <button
+          type="button"
+          data-testid="share-btn"
+          className="share-btn"
+          onClick={ () => {
+            clipboardCopy(`http://localhost:3000/${mealOrDrink}/${recipeId}`);
+            setCopy(true);
+          } }
+        >
+          <img
+            src={ shareIcon }
+            alt="Share Icon"
+          />
+        </button>
+        {copy && <span>Link copied!</span>}
         <button
           type="button"
           onClick={ handleFavorite }
+          className="favorite-btn"
         >
           <img
             data-testid="favorite-btn"
@@ -183,43 +158,77 @@ function RecipeInProgress() {
             alt="Favorite icon"
           />
         </button>
-        <span
-          data-testid="recipe-category"
-        >
-          {details.strCategory}
-        </span>
-      </header>
+      </div>
+      {mealOrDrink === 'meals'
+          && (
+            <div className="recipe-container">
+              <h1
+                data-testid="recipe-title"
+              >
+                { details.strMeal }
+              </h1>
+              <img
+                data-testid="recipe-photo"
+                className="thumbnail"
+                src={ details.strMealThumb }
+                alt={ details.strMeal }
+              />
+            </div>)}
+      {mealOrDrink === 'drinks'
+        && (
+          <div className="recipe-container">
+            <h1
+              data-testid="recipe-title"
+            >
+              { details.strDrink }
+            </h1>
+            <img
+              data-testid="recipe-photo"
+              className="thumbnail"
+              src={ details.strDrinkThumb }
+              alt={ details.strDrink }
+            />
+          </div>)}
+      <span
+        data-testid="recipe-category"
+      >
+        {details.strCategory}
+      </span>
       <body>
-        {(details && allIng)
-            && (
-              <ul>
-                {allIng
-                  .map((strIngre, strIndex) => (
-                    <li key={ strIndex }>
-                      <label
-                        data-testid={ `${strIndex}-ingredient-step` }
-                        style={ {
-                          textDecoration: ingredients.includes(`${strIngre}`)
-                              && 'line-through',
-                        } }
-                        htmlFor={ strIndex }
-                        onChange={ handleAddedIngredient }
-                      >
-                        <input
-                          value={ strIngre }
-                          type="checkbox"
-                          checked={ ingredients.includes(`${strIngre}`) }
+        <div className="ingredients-container">
+          {(details && allIng)
+              && (
+                <ul>
+                  {allIng
+                    .map((strIngre, strIndex) => (
+                      <li key={ strIndex }>
+                        <label
+                          data-testid={ `${strIndex}-ingredient-step` }
+                          style={ {
+                            textDecoration: ingredients.includes(`${strIngre}`)
+                                && 'line-through',
+                          } }
+                          htmlFor={ strIndex }
                           onChange={ handleAddedIngredient }
-                        />
-                        {strIngre}
-                      </label>
-                    </li>))}
-              </ul>)}
-        <p data-testid="instructions">
-          {details.strInstructions}
-        </p>
+                        >
+                          <input
+                            value={ strIngre }
+                            type="checkbox"
+                            checked={ ingredients.includes(`${strIngre}`) }
+                            onChange={ handleAddedIngredient }
+                          />
+                          {strIngre}
+                        </label>
+                      </li>))}
+                </ul>)}
+        </div>
+        <div>
+          <p data-testid="instructions" className="instructions">
+            {details.strInstructions}
+          </p>
+        </div>
       </body>
-      <footer>
+      <div className="finish-recipe-button-container">
         <button
           data-testid="finish-recipe-btn"
           type="button"
@@ -228,7 +237,7 @@ function RecipeInProgress() {
         >
           Finished
         </button>
-      </footer>
+      </div>
     </div>
   );
 }
