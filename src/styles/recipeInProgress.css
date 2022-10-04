@@ -1,0 +1,84 @@
+.recipe-container h1 {
+  color: white;
+  font-size: 60px;
+  margin-left: 160px;
+  margin-top: 200px;
+  position: absolute;
+}
+
+.recipe-container img {
+  height: 60vh;
+  margin-bottom: 15px;
+  width: 100vh;
+}
+
+.details-container {
+  margin-left: 15px;
+}
+
+.ingredients-container {
+  border: 1px solid rgba(0, 0, 0, 0.431);
+  border-radius: 5px;
+  font-weight: 300;
+  margin-left: 20px;
+  padding: 15px 60px;
+  width: 90%;
+}
+
+.ingredients-container li {
+  font-size: 18px;
+}
+
+.instructions {
+  border: 1px solid rgba(0, 0, 0, 0.431);
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 300;
+  margin-left: 20px;
+  margin-top: 20px;
+  padding: 15px;
+  width: 90%;
+}
+
+.finish-recipe-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.finish-recipe-button-container button {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 80%;
+}
+
+.btn-inprogress-container {
+  margin-left: 380px;
+  margin-top: 410px;
+  position: absolute;
+}
+
+.btn-inprogress-container span {
+  font-size: 12px;
+}
+
+.share-btn {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 3px;
+  padding: 5px;
+  width: 50px;
+}
+
+.favorite-btn {
+  background-color: rgb(252, 196, 54);
+  border: none;
+  border-radius: 50%;
+  height: 50px;
+  padding: 5px;
+  width: 50px;
+}
+
