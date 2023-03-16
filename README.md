@@ -23,7 +23,7 @@ Um aplicativo para buscar e salvar suas receitas favoritas de comidas e drinks c
 1. No terminal, em um diretório de sua escolha, clonar o repositório:
 
 ```
-git@github.com:melgacoc/13-projeto-carteira-digital.git
+git@github.com:melgacoc/16-projeto-app-de-receitas.git
 ```
 
 2. No repositório do projeto, instalar as dependências:
